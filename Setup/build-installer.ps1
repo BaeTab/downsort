@@ -6,7 +6,7 @@ param(
     [string]$Runtime = "win-x64",
     [switch]$SelfContained = $false,
     [switch]$CreateInstaller = $false,
-    [string]$Version = "1.0.0"
+    [string]$Version = ""  # 비어있으면 Directory.Build.props에서 읽기
 )
 
 $ErrorActionPreference = "Stop"
@@ -14,13 +14,33 @@ $ScriptRoot = $PSScriptRoot
 $ProjectRoot = Split-Path -Parent $ScriptRoot
 $ProjectName = "Downsort"
 $ProjectPath = Join-Path $ProjectRoot "$ProjectName\$ProjectName.csproj"
-$PublishDir = Join-Path $ProjectRoot "$ProjectName\bin\$Configuration\net8.0-windows\$Runtime\publish"
+$PublishDir = Join-Path $ProjectRoot "$ProjectName\bin\$Configuration\net8.0-windows\publish"
 $InstallerDir = Join-Path $ProjectRoot "Installer"
+$DirectoryBuildPropsPath = Join-Path $ProjectRoot "Directory.Build.props"
 
 Write-Host "=== DownSort Build and Package ===" -ForegroundColor Cyan
+
+# Read version from Directory.Build.props if not specified
+if ([string]::IsNullOrEmpty($Version)) {
+    if (Test-Path $DirectoryBuildPropsPath) {
+        Write-Host "Reading version from Directory.Build.props..." -ForegroundColor Yellow
+        [xml]$buildProps = Get-Content $DirectoryBuildPropsPath
+        $Version = $buildProps.Project.PropertyGroup.Version
+        if ([string]::IsNullOrEmpty($Version)) {
+            Write-Host "? Version not found in Directory.Build.props!" -ForegroundColor Red
+            exit 1
+        }
+        Write-Host "? Version from Directory.Build.props: $Version" -ForegroundColor Green
+    } else {
+        Write-Host "? Directory.Build.props not found, using default version 1.0.0" -ForegroundColor Yellow
+        $Version = "1.0.0"
+    }
+}
+
 Write-Host "Project Root: $ProjectRoot" -ForegroundColor Gray
 Write-Host "Configuration: $Configuration" -ForegroundColor Yellow
 Write-Host "Runtime: $Runtime" -ForegroundColor Yellow
+Write-Host "Version: $Version" -ForegroundColor Cyan
 Write-Host "Self-Contained: $SelfContained" -ForegroundColor Yellow
 Write-Host "Publish Directory: $PublishDir" -ForegroundColor Gray
 Write-Host ""
@@ -38,9 +58,20 @@ if (Test-Path $PublishDir) {
     Remove-Item $PublishDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-# Restore dependencies
+# Clean obj and bin folders to avoid assets.json issues
+Write-Host "Cleaning obj and bin folders..." -ForegroundColor Green
+$ObjDir = Join-Path $ProjectRoot "$ProjectName\obj"
+$BinDir = Join-Path $ProjectRoot "$ProjectName\bin"
+if (Test-Path $ObjDir) {
+    Remove-Item $ObjDir -Recurse -Force -ErrorAction SilentlyContinue
+}
+if (Test-Path $BinDir) {
+    Remove-Item $BinDir -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+# Restore dependencies with proper runtime
 Write-Host "Restoring dependencies..." -ForegroundColor Green
-dotnet restore $ProjectPath --verbosity quiet
+dotnet restore $ProjectPath --runtime $Runtime --verbosity quiet
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "? Restore failed!" -ForegroundColor Red
@@ -51,7 +82,7 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Running tests..." -ForegroundColor Green
 $TestProject = Join-Path $ProjectRoot "DownSort.Tests\DownSort.Tests.csproj"
 if (Test-Path $TestProject) {
-    dotnet test $TestProject --configuration $Configuration --no-restore --verbosity quiet
+    dotnet test $TestProject --configuration $Configuration --verbosity quiet
     if ($LASTEXITCODE -ne 0) {
         Write-Host "? Tests failed, but continuing..." -ForegroundColor Yellow
     } else {
@@ -70,11 +101,9 @@ $PublishArgs = @(
     "--configuration", $Configuration,
     "--runtime", $Runtime,
     "--output", $PublishDir,
-    "--no-restore",
     "/p:PublishSingleFile=true",
-    "/p:IncludeNativeLibrariesForSelfExtract=true",
-    "/p:Version=$Version",
-    "/p:AssemblyVersion=$Version"
+    "/p:IncludeNativeLibrariesForSelfExtract=true"
+    # Version은 Directory.Build.props에서 자동으로 읽음
 )
 
 if ($SelfContained) {
@@ -102,6 +131,12 @@ if (-not (Test-Path $ExePath)) {
 
 Write-Host "? Build completed successfully!" -ForegroundColor Green
 Write-Host "? Executable: $ExePath" -ForegroundColor Green
+
+# Get actual version from built assembly
+$BuiltVersion = (Get-Item $ExePath).VersionInfo.FileVersion
+if ($BuiltVersion) {
+    Write-Host "? Built version: $BuiltVersion" -ForegroundColor Green
+}
 
 # Create ZIP archive
 Write-Host ""
@@ -156,6 +191,7 @@ if ($CreateInstaller) {
             Write-Host "? ISS file not found: $IssPath" -ForegroundColor Red
         } else {
             # Update version in ISS file
+            Write-Host "Updating version in ISS file to $Version..." -ForegroundColor Cyan
             $IssContent = Get-Content $IssPath -Raw -Encoding UTF8
             $IssContent = $IssContent -replace '#define MyAppVersion ".*"', "#define MyAppVersion `"$Version`""
             Set-Content $IssPath $IssContent -Encoding UTF8
@@ -183,7 +219,7 @@ if ($CreateInstaller) {
 # Display summary
 Write-Host ""
 Write-Host "=== Build Summary ===" -ForegroundColor Cyan
-Write-Host "Version: $Version" -ForegroundColor White
+Write-Host "Version: $Version (from Directory.Build.props)" -ForegroundColor White
 Write-Host "Configuration: $Configuration" -ForegroundColor White
 Write-Host "Runtime: $Runtime" -ForegroundColor White
 Write-Host "Self-Contained: $SelfContained" -ForegroundColor White
@@ -208,3 +244,5 @@ Write-Host "  2. Test the ZIP: Extract and run from $ZipPath" -ForegroundColor G
 if ($CreateInstaller) {
     Write-Host "  3. Test the installer: Run the setup exe" -ForegroundColor Gray
 }
+Write-Host ""
+Write-Host "?? Tip: Update version in Directory.Build.props for next release" -ForegroundColor Yellow

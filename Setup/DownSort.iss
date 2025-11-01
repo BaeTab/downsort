@@ -5,7 +5,7 @@
 #define MyAppName "DownSort"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "DownSort Team"
-#define MyAppURL "https://github.com/yourusername/downsort"
+#define MyAppURL "https://github.com/BaeTab/downsort"
 #define MyAppExeName "Downsort.exe"
 
 [Setup]
@@ -29,8 +29,8 @@ OutputBaseFilename=DownSort-Setup-{#MyAppVersion}
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
-ArchitecturesInstallIn64BitMode=x64
-ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64compatible
+ArchitecturesAllowed=x64compatible
 MinVersion=10.0
 PrivilegesRequired=admin
 DisableProgramGroupPage=yes
@@ -42,23 +42,16 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.1; Check: not IsAdminInstallMode
-Name: "startupicon"; Description: "½Ã½ºÅÛ ½ÃÀÛ ½Ã ÀÚµ¿ ½ÇÇà"; GroupDescription: "Ãß°¡ ¿É¼Ç:"; Flags: unchecked
+Name: "startupicon"; Description: "ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½"; GroupDescription: "ï¿½ß°ï¿½ ï¿½É¼ï¿½:"; Flags: unchecked
 
 [Files]
-; Main Application - Adjust path to match your actual publish output
-Source: "..\Downsort\bin\Release\net8.0-windows\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-
-; Documentation (optional - uncomment if files exist)
-; Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion isreadme
-; Source: "..\USER_GUIDE.md"; DestDir: "{app}"; Flags: ignoreversion
-; Source: "..\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
+; Main Application - Use correct publish path
+Source: "..\Downsort\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
@@ -90,10 +83,10 @@ var
 begin
   if CurUninstallStep = usUninstall then
   begin
-    DialogResult := MsgBox('»ç¿ëÀÚ µ¥ÀÌÅÍ(¼³Á¤, ±ÔÄ¢, ·Î±×)¸¦ »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?' + #13#10 + 
-                           '¾Æ´Ï¿À¸¦ ¼±ÅÃÇÏ¸é Àç¼³Ä¡ ½Ã µ¥ÀÌÅÍ°¡ À¯ÁöµË´Ï´Ù.', 
+    DialogResult := MsgBox('ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ä¢, ï¿½Î±ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ã°Ú½ï¿½ï¿½Ï±ï¿½?' + #13#10 + 
+                           'ï¿½Æ´Ï¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ç¼³Ä¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ë´Ï´ï¿½.', 
                            mbConfirmation, MB_YESNO);
-    if DialogResult = IDYES then
+    if (DialogResult = IDYES) then
     begin
       DelTree(ExpandConstant('{localappdata}\DownSort'), True, True, True);
     end;
@@ -101,8 +94,8 @@ begin
 end;
 
 [CustomMessages]
-korean.LaunchProgram=DownSort ½ÇÇà
-korean.CreateDesktopIcon=¹ÙÅÁÈ­¸é ¾ÆÀÌÄÜ ¸¸µé±â
-korean.CreateQuickLaunchIcon=ºü¸¥ ½ÇÇà ¾ÆÀÌÄÜ ¸¸µé±â
-korean.AdditionalIcons=Ãß°¡ ¾ÆÀÌÄÜ:
-korean.UninstallProgram=Á¦°Å
+korean.LaunchProgram=DownSort ï¿½ï¿½ï¿½ï¿½
+korean.CreateDesktopIcon=ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+korean.AdditionalIcons=ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:
+korean.UninstallProgram=ï¿½ï¿½ï¿½ï¿½
+

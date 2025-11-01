@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Downsort.ViewModels;
@@ -14,6 +17,72 @@ namespace Downsort
         {
             InitializeComponent();
             DataContext = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
+            
+            // Window state changed event for maximize/restore button
+            StateChanged += MainWindow_StateChanged;
+        }
+
+        private void MainWindow_StateChanged(object? sender, EventArgs e)
+        {
+            // Update maximize/restore button icon
+            if (WindowState == WindowState.Maximized)
+            {
+                MaximizeRestoreIcon.Data = (Geometry)FindResource("RestoreIcon");
+                MaximizeRestoreButton.ToolTip = "Restore";
+            }
+            else
+            {
+                MaximizeRestoreIcon.Data = (Geometry)FindResource("MaximizeIcon");
+                MaximizeRestoreButton.ToolTip = "Maximize";
+            }
+        }
+
+        // Title Bar Event Handlers
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                // Double click to maximize/restore
+                MaximizeRestoreButton_Click(sender, e);
+            }
+            else
+            {
+                // Single click to drag window
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    try
+                    {
+                        DragMove();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Can only call DragMove when primary mouse button is down
+                        // Ignore this exception
+                    }
+                }
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+            {
+                WindowState = WindowState.Maximized;
+            }
+            else
+            {
+                WindowState = WindowState.Normal;
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         private void OnRecentLogDoubleClick(object sender, RowDoubleClickEventArgs e)
@@ -42,7 +111,7 @@ namespace Downsort
                 else
                 {
                     // If file doesn't exist, just open the folder
-                    var directory = Path.GetDirectoryName(filePath);
+                    var directory = System.IO.Path.GetDirectoryName(filePath);
                     if (Directory.Exists(directory))
                     {
                         Process.Start("explorer.exe", directory);
@@ -51,11 +120,11 @@ namespace Downsort
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(
+                MessageBox.Show(
                     $"Failed to open folder: {ex.Message}", 
                     "Error", 
-                    System.Windows.MessageBoxButton.OK, 
-                    System.Windows.MessageBoxImage.Error);
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
         }
     }

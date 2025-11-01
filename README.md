@@ -9,6 +9,7 @@
 [![DevExpress](https://img.shields.io/badge/DevExpress-25.1-FF7200)](https://www.devexpress.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
 [![Release](https://img.shields.io/github/v/release/BaeTab/downsort)](https://github.com/BaeTab/downsort/releases/latest)
+[![Build](https://github.com/BaeTab/downsort/actions/workflows/ci.yml/badge.svg)](https://github.com/BaeTab/downsort/actions/workflows/ci.yml)
 
 다운로드 폴더에 쌓이는 파일들을 규칙 기반으로 자동/수동 정리하는 데스크톱 애플리케이션
 
@@ -136,6 +137,7 @@ Recent Activity 패널에서 처리된 파일 확인 -> 더블클릭으로 폴�
 | Microsoft.Extensions | 9.0 | 의존성 주입, 구성 관리 |
 | xUnit | 2.6 | 단위 테스트 |
 | FluentAssertions | 6.12 | 테스트 어설션 |
+| GitHub Actions | - | CI/CD 자동화 |
 
 ### 프로젝트 구조
 
@@ -154,10 +156,13 @@ DownSort.sln
 │   ├── Rules/                   # 규칙 엔진
 │   └── Services/                # 서비스 구현
 ├── DownSort.Tests/              # 단위 및 통합 테스트 (23개)
-└── Setup/                       # 설치 프로그램 스크립트
-    ├── DownSort.iss             # Inno Setup 스크립트
-    ├── build-installer.ps1      # 빌드 자동화
-    └── build.bat                # 간편 빌드
+├── Setup/                       # 설치 프로그램 스크립트
+│   ├── DownSort.iss             # Inno Setup 스크립트
+│   ├── build-installer.ps1      # 빌드 자동화
+│   └── build.bat                # 간편 빌드
+└── .github/workflows/           # GitHub Actions
+    ├── ci.yml                   # CI 워크플로우
+    └── release.yml              # 릴리스 워크플로우
 ```
 
 ### 빌드 및 실행
@@ -191,6 +196,29 @@ cd Setup
 - `Installer/DownSort-v1.0.0-win-x64.zip` (80.59 MB)
 
 더 자세한 내용은 [빌드 가이드](Setup/README.md)를 참조하세요.
+
+### CI/CD (자동 빌드 및 릴리스)
+
+#### 자동 빌드
+- 모든 push 및 PR에서 자동 빌드
+- 23개 단위 테스트 자동 실행
+- 빌드 상태는 상단 배지에서 확인
+
+#### 자동 릴리스
+```bash
+# 새 버전 릴리스
+git tag -a v1.0.1 -m "Release v1.0.1"
+git push origin v1.0.1
+```
+
+GitHub Actions가 자동으로:
+1. 빌드 및 테스트
+2. Windows 설치 프로그램 생성
+3. ZIP 아카이브 생성
+4. GitHub Release 생성
+5. 파일 자동 업로드
+
+더 자세한 내용은 [릴리스 가이드](.github/RELEASE_GUIDE.md) 또는 [빠른 참조](.github/QUICK_RELEASE.md)를 참조하세요.
 
 ---
 
@@ -272,6 +300,8 @@ cd Setup
 4. 브랜치에 Push (`git push origin feature/AmazingFeature`)
 5. Pull Request 생성
 
+모든 PR은 자동으로 빌드 및 테스트됩니다.
+
 ---
 
 ## 제작
@@ -280,7 +310,8 @@ cd Setup
 - **UI 프레임워크**: DevExpress WPF Controls
 - **디자인**: Material Design
 - **개발 도구**: Visual Studio 2022
-- **버전 관리**: Git
+- **버전 관리**: Git + GitHub
+- **CI/CD**: GitHub Actions
 - **개발자**: BaeTab
 
 ---
@@ -298,6 +329,7 @@ cd Setup
 - Recent Activity 패널 (실시간 로그, 폴더 바로 가기)
 - Material Design UI
 - Windows 설치 프로그램 (Inno Setup)
+- GitHub Actions CI/CD
 
 #### 기술
 - .NET 8 + WPF
@@ -313,7 +345,10 @@ cd Setup
 
 - [사용자 가이드](USER_GUIDE.md)
 - [문제 해결](Setup/TROUBLESHOOTING.md)
+- [빌드 가이드](Setup/README.md)
+- [릴리스 가이드](.github/RELEASE_GUIDE.md)
 - [GitHub Issues](https://github.com/BaeTab/downsort/issues)
+- [GitHub Actions](https://github.com/BaeTab/downsort/actions)
 - [Releases](https://github.com/BaeTab/downsort/releases)
 - 이메일: b_h_woo@naver.com
 

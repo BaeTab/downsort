@@ -1,0 +1,26 @@
+<Project>
+  <PropertyGroup>
+    <!-- 중앙 버전 관리 -->
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <InformationalVersion>1.0.1</InformationalVersion>
+    
+    <!-- 회사 정보 -->
+    <Company>BaeTab</Company>
+    <Product>DownSort</Product>
+    <Copyright>Copyright @ 2025 BaeTab</Copyright>
+    
+    <!-- 프로젝트 정보 -->
+    <Authors>BaeTab</Authors>
+    <Description>Smart File Organizer for Windows</Description>
+    <PackageProjectUrl>https://github.com/BaeTab/downsort</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/BaeTab/downsort</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    
+    <!-- .NET 설정 -->
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

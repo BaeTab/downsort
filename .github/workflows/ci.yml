@@ -1,0 +1,58 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main, develop ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  SOLUTION_PATH: 'DownSort.sln'
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+          
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
+      
+    - name: Build solution
+      run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+      
+    - name: Run tests
+      run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: '**/test-results.trx'
+        
+    - name: Publish build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          **/bin/Release/**
+          !**/bin/Release/**/ref/**
+          !**/bin/Release/**/*.pdb

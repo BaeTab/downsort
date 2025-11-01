@@ -1,0 +1,254 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # v1.0.0, v1.2.3 등의 태그에 반응
+  workflow_dispatch:  # 수동 실행 가능
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: 'Downsort/Downsort.csproj'
+  SOLUTION_PATH: 'DownSort.sln'
+  RUNTIME: 'win-x64'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
+      
+    - name: Build solution
+      run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+      
+    - name: Run tests
+      run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-build --verbosity normal
+      
+  create-release:
+    name: Create Release
+    needs: build-and-test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Get version from tag
+      id: get_version
+      run: |
+        $version = "${{ github.ref }}" -replace 'refs/tags/v', ''
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+        Write-Host "Version from tag: $version"
+      shell: pwsh
+      
+    - name: Update Directory.Build.props version
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $buildPropsPath = "Directory.Build.props"
+        
+        if (Test-Path $buildPropsPath) {
+          Write-Host "Updating Directory.Build.props with version: $version"
+          [xml]$buildProps = Get-Content $buildPropsPath
+          $buildProps.Project.PropertyGroup.Version = $version
+          $buildProps.Project.PropertyGroup.AssemblyVersion = "$version.0"
+          $buildProps.Project.PropertyGroup.FileVersion = "$version.0"
+          $buildProps.Project.PropertyGroup.InformationalVersion = $version
+          $buildProps.Save($buildPropsPath)
+          Write-Host "? Directory.Build.props updated"
+        } else {
+          Write-Host "? Directory.Build.props not found!"
+        }
+      shell: pwsh
+      
+    - name: Clean previous builds
+      run: |
+        Remove-Item "Downsort/bin" -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-Item "Downsort/obj" -Recurse -Force -ErrorAction SilentlyContinue
+      shell: pwsh
+      
+    - name: Restore dependencies with runtime
+      run: |
+        dotnet restore ${{ env.SOLUTION_PATH }}
+        dotnet restore ${{ env.PROJECT_PATH }} --runtime ${{ env.RUNTIME }}
+      shell: pwsh
+      
+    - name: Build solution
+      run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+        
+    - name: Publish application
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }} `
+          --configuration Release `
+          --runtime ${{ env.RUNTIME }} `
+          --self-contained false `
+          --output "Downsort/bin/Release/net8.0-windows/publish" `
+          /p:PublishSingleFile=true `
+          /p:IncludeNativeLibrariesForSelfExtract=true
+      shell: pwsh
+      
+    - name: Verify published files
+      run: |
+        $publishDir = "Downsort/bin/Release/net8.0-windows/publish"
+        if (Test-Path "$publishDir/Downsort.exe") {
+          Write-Host "? Downsort.exe found"
+          $version = (Get-Item "$publishDir/Downsort.exe").VersionInfo.FileVersion
+          Write-Host "? File version: $version"
+          Get-ChildItem $publishDir | Select-Object Name, Length | Format-Table
+        } else {
+          Write-Host "? Downsort.exe not found!"
+          exit 1
+        }
+      shell: pwsh
+      
+    - name: Install Inno Setup
+      run: |
+        choco install innosetup -y
+      shell: pwsh
+      
+    - name: Update ISS version and create installer
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $innoSetupPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+        
+        # Wait for Inno Setup installation
+        Start-Sleep -Seconds 5
+        
+        # Verify Inno Setup installation
+        if (-not (Test-Path $innoSetupPath)) {
+          Write-Host "? Inno Setup not found at: $innoSetupPath"
+          exit 1
+        }
+        
+        # Update version in ISS file (fallback, Directory.Build.props should be primary)
+        $issPath = "Setup/DownSort.iss"
+        $issContent = Get-Content $issPath -Raw
+        $issContent = $issContent -replace '#define MyAppVersion ".*"', "#define MyAppVersion `"$version`""
+        $issContent = $issContent -replace 'Source: ".*publish\\', 'Source: "..\Downsort\bin\Release\net8.0-windows\publish\'
+        Set-Content $issPath $issContent
+        
+        Write-Host "Compiling installer with version: $version"
+        & $innoSetupPath $issPath
+        
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "? Inno Setup compilation failed!"
+          exit 1
+        }
+        
+        Write-Host "? Installer created successfully"
+      shell: pwsh
+      
+    - name: Create ZIP archive
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $publishDir = "Downsort/bin/Release/net8.0-windows/publish"
+        $zipPath = "Installer/DownSort-v$version-${{ env.RUNTIME }}.zip"
+        
+        # Create Installer directory if it doesn't exist
+        New-Item -ItemType Directory -Path "Installer" -Force | Out-Null
+        
+        # Copy documentation
+        Copy-Item "README.md" $publishDir -Force -ErrorAction SilentlyContinue
+        Copy-Item "USER_GUIDE.md" $publishDir -Force -ErrorAction SilentlyContinue
+        Copy-Item "CHANGELOG.md" $publishDir -Force -ErrorAction SilentlyContinue
+        Copy-Item "LICENSE.txt" $publishDir -Force -ErrorAction SilentlyContinue
+        
+        # Create ZIP
+        Compress-Archive -Path "$publishDir\*" -DestinationPath $zipPath -Force
+        
+        Write-Host "? ZIP created: $zipPath"
+        $zipSize = (Get-Item $zipPath).Length / 1MB
+        Write-Host "  Size: $([math]::Round($zipSize, 2)) MB"
+      shell: pwsh
+      
+    - name: Calculate checksums
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $setupFile = "Installer/DownSort-Setup-$version.exe"
+        $zipFile = "Installer/DownSort-v$version-${{ env.RUNTIME }}.zip"
+        
+        if (Test-Path $setupFile) {
+          $setupHash = (Get-FileHash -Path $setupFile -Algorithm SHA256).Hash
+          "Setup SHA256: $setupHash" | Out-File -FilePath "Installer/checksums.txt"
+          Write-Host "? Setup checksum: $setupHash"
+        } else {
+          Write-Host "? Setup file not found: $setupFile"
+        }
+        
+        if (Test-Path $zipFile) {
+          $zipHash = (Get-FileHash -Path $zipFile -Algorithm SHA256).Hash
+          "ZIP SHA256: $zipHash" | Out-File -FilePath "Installer/checksums.txt" -Append
+          Write-Host "? ZIP checksum: $zipHash"
+        } else {
+          Write-Host "? ZIP file not found: $zipFile"
+        }
+        
+        Get-Content "Installer/checksums.txt"
+      shell: pwsh
+      
+    - name: Generate Release Notes
+      id: release_notes
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $notes = @"
+        # DownSort v$version
+        
+        ## 다운로드
+        
+        ### Windows 설치 프로그램 (권장)
+        - **DownSort-Setup-$version.exe** - Windows Installer
+        - 자동 설치 및 설정
+        - .NET 8 Runtime 자동 체크
+        
+        ### 수동 설치 (ZIP)
+        - **DownSort-v$version-${{ env.RUNTIME }}.zip** - Portable version
+        - 압축 해제 후 바로 실행
+        
+        ## 시스템 요구사항
+        - Windows 10 (64-bit) 이상
+        - .NET 8 Runtime
+        
+        ## 체크섬
+        파일 무결성 확인을 위한 SHA256 해시는 checksums.txt를 참조하세요.
+        
+        ## 버전 관리
+        이 릴리스는 Directory.Build.props에서 중앙 관리되는 버전 번호를 사용합니다.
+        
+        ## 문서
+        - [사용자 가이드](https://github.com/BaeTab/downsort/blob/master/USER_GUIDE.md)
+        - [문제 해결](https://github.com/BaeTab/downsort/blob/master/Setup/TROUBLESHOOTING.md)
+        - [변경 이력](https://github.com/BaeTab/downsort/blob/master/CHANGELOG.md)
+        "@
+        
+        $notes | Out-File -FilePath "release_notes.md"
+        echo "NOTES_FILE=release_notes.md" >> $env:GITHUB_OUTPUT
+      shell: pwsh
+      
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          Installer/DownSort-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          Installer/DownSort-v${{ steps.get_version.outputs.VERSION }}-${{ env.RUNTIME }}.zip
+          Installer/checksums.txt
+          Directory.Build.props
+        body_path: ${{ steps.release_notes.outputs.NOTES_FILE }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
