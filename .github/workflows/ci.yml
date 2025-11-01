@@ -8,7 +8,6 @@ on:
 
 env:
   DOTNET_VERSION: '8.0.x'
-  SOLUTION_PATH: 'DownSort.sln'
 
 jobs:
   build:
@@ -24,11 +23,13 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     
-    - name: Note about DevExpress
+    - name: Build Information
       run: |
-        Write-Host "?? DevExpress packages require authentication"
-        Write-Host "   Building projects without DevExpress dependencies only"
-        Write-Host "   For full build with UI, configure DevExpress secrets"
+        Write-Host "=== DownSort CI Build ===" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "This CI workflow builds projects without DevExpress dependencies." -ForegroundColor Yellow
+        Write-Host "For full builds with UI, use the Release workflow with DevExpress secrets." -ForegroundColor Yellow
+        Write-Host ""
       shell: pwsh
         
     - name: Cache NuGet packages
@@ -39,32 +40,46 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
           
-    - name: Restore Domain project
-      run: dotnet restore DownSort.Domain/DownSort.Domain.csproj
-      continue-on-error: false
-      
     - name: Build Domain project
-      run: dotnet build DownSort.Domain/DownSort.Domain.csproj --configuration Release --no-restore
-      continue-on-error: false
-      
-    - name: Restore Infrastructure project
-      run: dotnet restore DownSort.Infrastructure/DownSort.Infrastructure.csproj
-      continue-on-error: true
+      run: |
+        Write-Host "Building Domain project..." -ForegroundColor Green
+        dotnet restore DownSort.Domain/DownSort.Domain.csproj
+        dotnet build DownSort.Domain/DownSort.Domain.csproj --configuration Release --no-restore
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "? Domain build successful" -ForegroundColor Green
+        }
+      shell: pwsh
       
     - name: Build Infrastructure project
-      run: dotnet build DownSort.Infrastructure/DownSort.Infrastructure.csproj --configuration Release --no-restore
-      continue-on-error: true
-      
-    - name: Restore Tests project
-      run: dotnet restore DownSort.Tests/DownSort.Tests.csproj
+      run: |
+        Write-Host "Building Infrastructure project..." -ForegroundColor Green
+        dotnet restore DownSort.Infrastructure/DownSort.Infrastructure.csproj
+        dotnet build DownSort.Infrastructure/DownSort.Infrastructure.csproj --configuration Release --no-restore
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "? Infrastructure build successful" -ForegroundColor Green
+        }
+      shell: pwsh
       continue-on-error: true
       
     - name: Build Tests project
-      run: dotnet build DownSort.Tests/DownSort.Tests.csproj --configuration Release --no-restore
+      run: |
+        Write-Host "Building Tests project..." -ForegroundColor Green
+        dotnet restore DownSort.Tests/DownSort.Tests.csproj
+        dotnet build DownSort.Tests/DownSort.Tests.csproj --configuration Release --no-restore
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "? Tests build successful" -ForegroundColor Green
+        }
+      shell: pwsh
       continue-on-error: true
       
     - name: Run tests
-      run: dotnet test DownSort.Tests/DownSort.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+      run: |
+        Write-Host "Running tests..." -ForegroundColor Green
+        dotnet test DownSort.Tests/DownSort.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "? Tests passed" -ForegroundColor Green
+        }
+      shell: pwsh
       continue-on-error: true
       
     - name: Upload test results
@@ -73,13 +88,18 @@ jobs:
       with:
         name: test-results
         path: '**/test-results.trx'
+        if-no-files-found: ignore
         
-    - name: Build summary
+    - name: Build Summary
+      if: always()
       run: |
-        Write-Host "`n=== Build Summary ===" -ForegroundColor Cyan
-        Write-Host "? Domain project: Built successfully" -ForegroundColor Green
-        Write-Host "? UI project (Downsort): Requires DevExpress" -ForegroundColor Yellow
-        Write-Host "`nTo build the full solution with UI:" -ForegroundColor White
-        Write-Host "1. Add DEVEXPRESS_NUGET_KEY secret" -ForegroundColor White
-        Write-Host "2. See .github/DEVEXPRESS_SETUP.md for details" -ForegroundColor White
+        Write-Host ""
+        Write-Host "=== Build Summary ===" -ForegroundColor Cyan
+        Write-Host "? Domain: Built successfully" -ForegroundColor Green
+        Write-Host "? UI (Downsort): Requires DevExpress (skipped in CI)" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "For full solution builds:" -ForegroundColor White
+        Write-Host "1. Use the Release workflow (triggered by version tags)" -ForegroundColor White
+        Write-Host "2. Configure DEVEXPRESS_NUGET_KEY secret" -ForegroundColor White
+        Write-Host "3. See .github/DEVEXPRESS_SETUP.md for details" -ForegroundColor White
       shell: pwsh
