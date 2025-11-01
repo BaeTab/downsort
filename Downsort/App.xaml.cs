@@ -36,6 +36,7 @@ namespace Downsort
                     services.AddSingleton<IFileOpService, FileOpService>();
                     services.AddSingleton<IFileWatcherService, FileWatcherService>();
                     services.AddSingleton<IUndoService, UndoService>();
+                    services.AddSingleton<IUpdateService, UpdateService>();
                     
                     // Persistence Services
                     services.AddSingleton<ISettingsService, SettingsService>();

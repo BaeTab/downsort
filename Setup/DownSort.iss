@@ -1,9 +1,9 @@
-; DownSort Installer Script
+﻿; DownSort Installer Script
 ; Inno Setup 6.x required
 ; https://jrsoftware.org/isinfo.php
 
 #define MyAppName "DownSort"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "DownSort Team"
 #define MyAppURL "https://github.com/BaeTab/downsort"
 #define MyAppExeName "Downsort.exe"
@@ -98,4 +98,5 @@ korean.LaunchProgram=DownSort ����
 korean.CreateDesktopIcon=����ȭ�� ������ �����
 korean.AdditionalIcons=�߰� ������:
 korean.UninstallProgram=����
+
 

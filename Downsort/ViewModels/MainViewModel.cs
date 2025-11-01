@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using DownSort.Domain.Models;
 using DownSort.Domain.Services;
+using Downsort.Views;
 
 namespace Downsort.ViewModels
 {
@@ -20,6 +22,7 @@ namespace Downsort.ViewModels
         private readonly IRulesStore _rulesStore;
         private readonly ILogStore _logStore;
         private readonly IUndoService _undoService;
+        private readonly IUpdateService _updateService;
 
         private bool _isWatcherRunning;
         private string _statusMessage = "준비";
@@ -67,6 +70,7 @@ namespace Downsort.ViewModels
         public ICommand UndoLastCommand { get; }
         public ICommand ClearPreviewCommand { get; }
         public ICommand OpenFolderCommand { get; }
+        public ICommand CheckUpdateCommand { get; }
 
         public MainViewModel(
             IFileWatcherService watcherService,
@@ -75,7 +79,8 @@ namespace Downsort.ViewModels
             ISettingsService settingsService,
             IRulesStore rulesStore,
             ILogStore logStore,
-            IUndoService undoService)
+            IUndoService undoService,
+            IUpdateService updateService)
         {
             _watcherService = watcherService ?? throw new ArgumentNullException(nameof(watcherService));
             _ruleEngine = ruleEngine ?? throw new ArgumentNullException(nameof(ruleEngine));
@@ -84,6 +89,7 @@ namespace Downsort.ViewModels
             _rulesStore = rulesStore ?? throw new ArgumentNullException(nameof(rulesStore));
             _logStore = logStore ?? throw new ArgumentNullException(nameof(logStore));
             _undoService = undoService ?? throw new ArgumentNullException(nameof(undoService));
+            _updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
 
             PreviewItems = new ObservableCollection<MovePlan>();
             Rules = new ObservableCollection<RuleModel>();
@@ -96,6 +102,7 @@ namespace Downsort.ViewModels
             UndoLastCommand = new DelegateCommand(async () => await UndoLastAsync(), () => _undoService.CanUndo);
             ClearPreviewCommand = new DelegateCommand(() => PreviewItems.Clear());
             OpenFolderCommand = new DelegateCommand<MoveLogEntry>(OpenFolder);
+            CheckUpdateCommand = new DelegateCommand(async () => await CheckForUpdatesAsync());
 
             _watcherService.FileDetected += OnFileDetected;
             _watcherService.ErrorOccurred += OnWatcherError;
@@ -147,7 +154,7 @@ namespace Downsort.ViewModels
                 await _settingsService.LoadAsync();
                 var rules = await _rulesStore.LoadRulesAsync();
                 
-                await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     foreach (var rule in rules)
                     {
@@ -156,7 +163,7 @@ namespace Downsort.ViewModels
                 });
 
                 var recentLogs = await _logStore.GetRecentLogsAsync(50);
-                await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     foreach (var log in recentLogs)
                     {
@@ -170,10 +177,115 @@ namespace Downsort.ViewModels
                 {
                     await ToggleWatcherAsync();
                 }
+
+                // 시작 시 업데이트 확인 (백그라운드)
+                _ = CheckForUpdatesOnStartupAsync();
             }
             catch (Exception ex)
             {
                 StatusMessage = $"초기화 오류: {ex.Message}";
+            }
+        }
+
+        /// <summary>
+        /// 시작 시 자동 업데이트 확인 (백그라운드)
+        /// </summary>
+        private async Task CheckForUpdatesOnStartupAsync()
+        {
+            try
+            {
+                var settings = _settingsService.Current;
+                
+                // 설정에서 비활성화했거나 최근 확인했으면 스킵
+                if (!settings.CheckForUpdatesOnStartup)
+                    return;
+                
+                if ((DateTime.Now - settings.LastUpdateCheck).TotalHours < 24)
+                    return;
+                
+                // GitHub에서 최신 릴리스 확인
+                var releaseInfo = await _updateService.CheckForUpdatesAsync();
+                
+                if (releaseInfo == null)
+                    return;
+                
+                // 마지막 확인 시간 업데이트
+                settings.LastUpdateCheck = DateTime.Now;
+                await _settingsService.SaveAsync(settings);
+                
+                // 새 버전이 있으면 다이얼로그 표시
+                if (releaseInfo.IsNewerThan(_updateService.GetCurrentVersion()))
+                {
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        var dialog = new UpdateDialog(releaseInfo, _updateService);
+                        if (Application.Current.MainWindow != null)
+                        {
+                            dialog.Owner = Application.Current.MainWindow;
+                        }
+                        dialog.ShowDialog();
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                // 업데이트 확인 실패는 조용히 무시
+                Debug.WriteLine($"업데이트 확인 실패: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 수동 업데이트 확인
+        /// </summary>
+        private async Task CheckForUpdatesAsync()
+        {
+            try
+            {
+                StatusMessage = "업데이트를 확인하는 중...";
+                
+                var releaseInfo = await _updateService.CheckForUpdatesAsync();
+                
+                if (releaseInfo == null)
+                {
+                    MessageBox.Show(
+                        "업데이트 정보를 가져올 수 없습니다.\n\n" +
+                        "인터넷 연결을 확인하거나 나중에 다시 시도하세요.",
+                        "업데이트 확인",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    StatusMessage = "준비";
+                    return;
+                }
+                
+                if (releaseInfo.IsNewerThan(_updateService.GetCurrentVersion()))
+                {
+                    var dialog = new UpdateDialog(releaseInfo, _updateService);
+                    if (Application.Current.MainWindow != null)
+                    {
+                        dialog.Owner = Application.Current.MainWindow;
+                    }
+                    dialog.ShowDialog();
+                    StatusMessage = "준비";
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"현재 최신 버전을 사용 중입니다.\n\n" +
+                        $"현재 버전: v{_updateService.GetCurrentVersion()}",
+                        "업데이트 확인",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    StatusMessage = "준비";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"업데이트 확인 중 오류가 발생했습니다:\n\n{ex.Message}",
+                    "오류",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                StatusMessage = $"오류: {ex.Message}";
             }
         }
 
@@ -208,7 +320,7 @@ namespace Downsort.ViewModels
                 StatusMessage = "스캔 중...";
 
                 // UI 스레드에서 Clear 호출
-                await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     PreviewItems.Clear();
                 });
@@ -230,7 +342,7 @@ namespace Downsort.ViewModels
                     var plans = await _ruleEngine.EvaluateAsync(files, Rules, settings.ConflictStrategy);
 
                     // UI 스레드에서 추가
-                    await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         foreach (var plan in plans)
                         {
@@ -297,7 +409,7 @@ namespace Downsort.ViewModels
 
                     await _logStore.AddLogAsync(logEntry);
                     
-                    await System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         RecentLogs.Insert(0, logEntry);
                         if (RecentLogs.Count > 100)
@@ -396,7 +508,7 @@ namespace Downsort.ViewModels
 
                     await _logStore.AddLogAsync(logEntry);
                     
-                    System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+                    Application.Current?.Dispatcher.Invoke(() =>
                     {
                         RecentLogs.Insert(0, logEntry);
                         if (RecentLogs.Count > 100)
@@ -413,7 +525,7 @@ namespace Downsort.ViewModels
             }
             catch (Exception ex)
             {
-                System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+                Application.Current?.Dispatcher.Invoke(() =>
                 {
                     StatusMessage = $"자동 처리 오류: {ex.Message}";
                 });
@@ -422,7 +534,7 @@ namespace Downsort.ViewModels
 
         private void OnWatcherError(object? sender, Exception ex)
         {
-            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            Application.Current?.Dispatcher.Invoke(() =>
             {
                 StatusMessage = $"감시 오류: {ex.Message}";
             });

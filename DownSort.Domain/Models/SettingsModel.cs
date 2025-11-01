@@ -22,5 +22,10 @@ namespace DownSort.Domain.Models
         public bool ShowNotifications { get; set; } = true;
         public int NotificationFrequencySeconds { get; set; } = 5;
         public bool AutoStartWatcher { get; set; } = false;
+        
+        // Auto-update settings
+        public bool CheckForUpdatesOnStartup { get; set; } = true;
+        public bool AutoDownloadUpdates { get; set; } = false;
+        public DateTime LastUpdateCheck { get; set; } = DateTime.MinValue;
     }
 }

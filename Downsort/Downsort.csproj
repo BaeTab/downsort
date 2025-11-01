@@ -10,10 +10,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DevExpress.Wpf" Version="25.1.*" />
+      <PackageReference Include="DevExpress.Wpf" Version="25.1.5" />
       <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-      <PackageReference Include="DevExpress.Mvvm" Version="25.1.*" />
-      <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="25.1.*" />
+      <PackageReference Include="DevExpress.Mvvm" Version="25.1.5" />
+      <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="25.1.5" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
