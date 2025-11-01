@@ -26,12 +26,44 @@ jobs:
     
     - name: Setup DevExpress NuGet source
       run: |
-        # Add DevExpress NuGet source
-        dotnet nuget add source https://nuget.devexpress.com/api/v3/index.json `
-          --name DevExpress `
-          --username ${{ secrets.DEVEXPRESS_NUGET_USERNAME }} `
-          --password ${{ secrets.DEVEXPRESS_NUGET_KEY }} `
-          --store-password-in-clear-text
+        Write-Host "Setting up DevExpress NuGet source..."
+        
+        # Check if secrets are available
+        if ([string]::IsNullOrEmpty("${{ secrets.DEVEXPRESS_NUGET_USERNAME }}")) {
+          Write-Host "?? DEVEXPRESS_NUGET_USERNAME secret is not set"
+        } else {
+          Write-Host "? DEVEXPRESS_NUGET_USERNAME is set"
+        }
+        
+        if ([string]::IsNullOrEmpty("${{ secrets.DEVEXPRESS_NUGET_KEY }}")) {
+          Write-Host "?? DEVEXPRESS_NUGET_KEY secret is not set"
+        } else {
+          Write-Host "? DEVEXPRESS_NUGET_KEY is set"
+        }
+        
+        # Remove existing DevExpress source if it exists
+        dotnet nuget remove source DevExpress 2>$null
+        
+        # Add DevExpress NuGet source with authentication
+        try {
+          dotnet nuget add source "https://nuget.devexpress.com/${{ secrets.DEVEXPRESS_NUGET_KEY }}/api/v3/index.json" `
+            --name DevExpress `
+            --username "${{ secrets.DEVEXPRESS_NUGET_USERNAME }}" `
+            --password "${{ secrets.DEVEXPRESS_NUGET_KEY }}" `
+            --store-password-in-clear-text
+          
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "? DevExpress NuGet source added successfully"
+          } else {
+            Write-Host "?? Failed to add DevExpress source, but continuing..."
+          }
+        } catch {
+          Write-Host "?? Error adding DevExpress source: $_"
+        }
+        
+        # List sources
+        Write-Host "`nConfigured NuGet sources:"
+        dotnet nuget list source
       shell: pwsh
       continue-on-error: true
         

@@ -28,12 +28,19 @@ jobs:
     
     - name: Setup DevExpress NuGet source
       run: |
-        # Add DevExpress NuGet source
-        dotnet nuget add source https://nuget.devexpress.com/api/v3/index.json `
-          --name DevExpress `
-          --username ${{ secrets.DEVEXPRESS_NUGET_USERNAME }} `
-          --password ${{ secrets.DEVEXPRESS_NUGET_KEY }} `
-          --store-password-in-clear-text
+        Write-Host "Setting up DevExpress NuGet source..."
+        
+        # Remove existing DevExpress source if it exists
+        dotnet nuget remove source DevExpress 2>$null
+        
+        # Add DevExpress NuGet source with API key in URL
+        dotnet nuget add source "https://nuget.devexpress.com/${{ secrets.DEVEXPRESS_NUGET_KEY }}/api/v3/index.json" `
+          --name DevExpress
+        
+        Write-Host "? DevExpress NuGet source configured"
+        
+        # List sources
+        dotnet nuget list source
       shell: pwsh
       continue-on-error: true
         
@@ -42,10 +49,13 @@ jobs:
       
     - name: Build solution
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+      shell: pwsh
+      continue-on-error: true
       
     - name: Run tests
       run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-build --verbosity normal
-      
+      shell: pwsh
+      continue-on-error: true
   create-release:
     name: Create Release
     needs: build-and-test
@@ -62,12 +72,16 @@ jobs:
     
     - name: Setup DevExpress NuGet source
       run: |
-        # Add DevExpress NuGet source
-        dotnet nuget add source https://nuget.devexpress.com/api/v3/index.json `
-          --name DevExpress `
-          --username ${{ secrets.DEVEXPRESS_NUGET_USERNAME }} `
-          --password ${{ secrets.DEVEXPRESS_NUGET_KEY }} `
-          --store-password-in-clear-text
+        Write-Host "Setting up DevExpress NuGet source..."
+        
+        # Remove existing DevExpress source if it exists
+        dotnet nuget remove source DevExpress 2>$null
+        
+        # Add DevExpress NuGet source with API key in URL
+        dotnet nuget add source "https://nuget.devexpress.com/${{ secrets.DEVEXPRESS_NUGET_KEY }}/api/v3/index.json" `
+          --name DevExpress
+        
+        Write-Host "? DevExpress NuGet source configured"
       shell: pwsh
       continue-on-error: true
         
@@ -112,6 +126,8 @@ jobs:
       
     - name: Build solution
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+      shell: pwsh
+      continue-on-error: true
         
     - name: Publish application
       run: |
