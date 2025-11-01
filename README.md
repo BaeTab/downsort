@@ -63,6 +63,7 @@
 ### 메인 화면 (Modern Material Design)
 ```
 <img width="1489" height="838" alt="image" src="https://github.com/user-attachments/assets/a209e3a2-b624-4449-b9b4-d34eca1c4891" />
+```
 
 
 ### 주요 디자인 특징
