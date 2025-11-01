@@ -1,26 +1,86 @@
-# 변경 이력 (Changelog)
+# Changelog (변경 이력)
 
-모든 주목할 만한 변경 사항이 이 파일에 문서화됩니다.
+모든 주목할 만한 변경 사항은 이 파일에 문서화됩니다.
+
+이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
+
+---
+
+## [1.0.2] - 2025-01-10
+
+### 추가됨 (Added)
+- **자동 업데이트 기능**
+  - GitHub Releases API 연동
+  - 시작 시 자동 업데이트 확인 (24시간 간격)
+  - 수동 업데이트 확인 버튼
+  - Material Design 업데이트 다이얼로그
+  - 진행률 표시와 함께 다운로드
+  - 자동 설치 (관리자 권한 요청)
+
+- **설정 추가**
+  - `CheckForUpdatesOnStartup`: 시작 시 자동 업데이트 확인
+  - `LastUpdateCheck`: 마지막 업데이트 확인 시간
+
+- **새로운 서비스**
+  - `IUpdateService`: 업데이트 서비스 인터페이스
+  - `UpdateService`: GitHub API 구현
+  - `ReleaseInfo`: 릴리스 정보 모델
+  - `ReleaseAsset`: 다운로드 파일 정보
+
+### 개선됨 (Improved)
+- MainWindow UI에 Update 버튼 추가
+- 버전 정보를 Directory.Build.props로 중앙 관리
+- 문서 구조 개선
+
+### 기술 상세
+- GitHub API를 통한 최신 릴리스 확인
+- 버전 비교 (v1.0.1 vs v1.0.2)
+- 설치 프로그램 자동 다운로드
+- Temp 폴더에 다운로드 저장
+- 설치 후 애플리케이션 자동 재시작
+
+---
+
+## [1.0.1] - 2025-01-08
+
+### 추가됨 (Added)
+- **커스텀 타이틀바**
+  - Material Design 스타일 타이틀바
+  - 창 드래그로 이동
+  - 더블클릭으로 최대화/복원
+  - 호버 효과가 있는 창 컨트롤 버튼
+  - 앱 아이콘과 부제목 표시
+
+### 개선됨 (Improved)
+- DevExpress NuGet 설정 간소화
+- 빌드 프로세스 문서화
+- 수동 빌드로 전환 (CI/CD 제거)
+
+### 수정됨 (Fixed)
+- 창 관리 관련 버그 수정
+- API 키 노출 보안 문제 해결
+
+---
 
 ## [1.0.0] - 2025-01-01
 
 ### 추가됨 (Added)
 - **핵심 기능**
-  - 실시간 파일 시스템 감시 서비스 (FileSystemWatcher 기반)
-  - 규칙 기반 파일 분류 엔진
-  - 미리보기 및 선택적 실행 기능
-  - Undo/Redo 지원 (최대 100단계)
-  - 로그 기록 및 CSV 내보내기
+  - 실시간 파일 시스템 감시 (FileSystemWatcher 기반)
+  - 규칙 기반 자동 분류 시스템
+  - 미리보기 및 수동 실행 기능
+  - Undo/Redo 기능 (최대 100단계)
+  - 로그 관리 및 CSV 내보내기
   - 통계 대시보드
 
 - **규칙 엔진**
   - 확장자 기반 필터링
   - 파일명 키워드 포함/제외 조건
-  - 파일 크기 범위 필터
-  - 생성/수정 날짜 범위 필터
+  - 파일 크기 범위 조건
+  - 생성/수정 날짜 범위 조건
   - 정규식 패턴 매칭
-  - 우선순위 기반 규칙 평가
-  - 대상 경로 템플릿 매크로: {Category}, {Ext}, {YYYY}, {MM}, {DD}, {Today}, {SourceFolderName}, {FileName}
+  - 우선순위 기반 규칙 적용
+  - 대상 폴더 템플릿 매크로: {Category}, {Ext}, {YYYY}, {MM}, {DD}
 
 - **기본 규칙 템플릿**
   - Documents (pdf, doc, docx, xls, xlsx, ppt, pptx, txt, rtf, odt)
@@ -33,38 +93,37 @@
 - **파일 작업**
   - 이동 (Move)
   - 복사 (Copy)
-  - 이름 변경 (Rename)
   - 삭제 (Delete) - 기본 비활성화
   - 이름 충돌 해결 전략 (자동 리네임, 건너뛰기, 덮어쓰기)
 
 - **UI 컴포넌트**
   - DevExpress ThemedWindow 기반 메인 윈도우
-  - DockLayoutManager를 사용한 유연한 레이아웃
-  - GridControl을 사용한 규칙/미리보기/로그 표시
-  - 상태 표시줄
-  - 툴바 버튼
+  - DockLayoutManager로 구성된 유연한 레이아웃
+  - GridControl로 구성된 규칙/미리보기/로그 표시
+  - 실시간 상태 표시
+  - Material Design 아이콘
 
 - **설정 관리**
-  - JSON 기반 로컬 저장
-  - 감시 폴더 목록 관리
-  - 성능 튜닝 옵션 (동시 작업 수, 파일 잠금 폴링 시간)
+  - JSON 기반 설정 저장
+  - 감시 폴더 다중 선택
+  - 충돌 해결 전략 선택
   - 로그 보존 정책 (기본 90일)
   - Undo 스택 크기 설정
 
-- **인프라**
+- **아키텍처**
   - Microsoft.Extensions.Hosting 기반 DI 컨테이너
   - Clean Architecture (Domain-Infrastructure-Application 분리)
   - MVVM 패턴 (DevExpress MVVM Framework)
-  - 비동기 파일 I/O (ConfigureAwait(false) 준수)
-  - 안전한 파일 잠금 감지 및 재시도 로직
+  - 비동기 파일 I/O
+  - 안정적인 파일 잠금 감지
 
 - **테스트**
   - xUnit 기반 단위 테스트
-  - FluentAssertions를 사용한 Fluent API 테스트
-  - RuleEngine 테스트 (10개 테스트)
-  - FileOpService 테스트 (8개 테스트)
-  - UndoService 테스트 (5개 테스트)
-  - **테스트 커버리지**: 85%+ (도메인/서비스 계층)
+  - FluentAssertions 기반 테스트
+  - RuleEngine 테스트 (10개)
+  - FileOpService 테스트 (8개)
+  - UndoService 테스트 (5개)
+  - **테스트 커버리지**: 85%+
 
 ### 기술 스택
 - C# 12
@@ -76,46 +135,25 @@
 
 ### 보안
 - 모든 데이터 로컬 저장 (네트워크 통신 없음)
-- 민감한 경로 정보 환경 변수 사용
-- 삭제 작업 2단계 확인
-- 파일 잠금 안전성 보장
+- 민감한 작업 2단계 확인
+- 설정 파일 백업 자동 생성
 
-### 성능 최적화
-- GridControl 가상화 모드
-- 비동기 파이프라인 (파일 스캔 → 규칙 평가 → UI 바인딩)
-- 1만 개 파일 스캔 시 UI 프리즈 방지
-- 파일 잠금 감지를 통한 안정적인 처리
-
-### 접근성
-- 키보드 내비게이션 지원
-- 고해상도 DPI 지원
-- 다중 모니터 지원
-
-### 데이터 구조
+### 데이터 저장 위치
 ```
 %LocalAppData%\DownSort\
 ├── settings.json
-├── settings.json.bak (자동 백업)
+├── settings.json.bak
 ├── rules.json
-├── rules.json.bak (자동 백업)
+├── rules.json.bak
 └── logs.json
 ```
 
 ### 알려진 제한 사항
 - Windows 전용 (WPF 기반)
-- 네트워크 드라이브는 권장하지 않음 (성능 문제)
-- Junction/심볼릭 링크는 건너뜀
-- 최대 경로 길이: Windows 제한 준수
+- 네트워크 드라이브 성능 저하 가능
+- Junction/심볼릭 링크 건너뜀
 
-### 향후 계획
-- [ ] 다국어 지원 (ko-KR, en-US)
-- [ ] 다크/라이트 테마 전환
-- [ ] 트레이 아이콘 및 토스트 알림
-- [ ] MSIX 패키징
-- [ ] 설정 가져오기/내보내기
-- [ ] 규칙 가져오기/내보내기
-- [ ] 통계 차트 (DevExpress ChartControl)
-- [ ] 성능 프로파일링
+---
 
 ## [0.9.0] - 2024-12-20 (내부 베타)
 
@@ -125,27 +163,6 @@
 - 간단한 규칙 엔진
 
 ### 변경됨
-- 아키텍처를 Clean Architecture로 리팩토링
-
-### 수정됨
-- 파일 잠금 감지 로직 개선
-- 메모리 누수 수정
+- 아키텍처 Clean Architecture로 리팩터링
 
 ---
-
-## 버전 규칙
-
-이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
-
-- **MAJOR** version: 호환되지 않는 API 변경
-- **MINOR** version: 하위 호환되는 기능 추가
-- **PATCH** version: 하위 호환되는 버그 수정
-
-## 카테고리
-
-- **Added**: 새로운 기능
-- **Changed**: 기존 기능의 변경
-- **Deprecated**: 곧 제거될 기능
-- **Removed**: 제거된 기능
-- **Fixed**: 버그 수정
-- **Security**: 보안 관련 수정
