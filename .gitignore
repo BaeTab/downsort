@@ -124,6 +124,20 @@ licenses.licx
 !**/settings.template.json
 !**/rules.template.json
 
+## Temporary documentation (work-in-progress guides)
+*_SUMMARY.md
+*_COMPLETE.md
+*_ALERT.md
+*_RESOLVED.md
+*_TROUBLESHOOTING.md
+*_GUIDE.md
+CUSTOM_*.md
+GIT_PUSH_*.md
+DEVEXPRESS_*.md
+RELEASE_v*.md
+CICD_*.md
+CI_*.md
+
 ## Documentation build artifacts
 docs/_build/
 docs/.doctrees/
