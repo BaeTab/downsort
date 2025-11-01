@@ -1,88 +1,88 @@
-# Changelog (º¯°æ ÀÌ·Â)
+# Changelog (ë³€ê²½ ì´ë ¥)
 
-¸ðµç ÁÖ¸ñÇÒ ¸¸ÇÑ º¯°æ »çÇ×Àº ÀÌ ÆÄÀÏ¿¡ ¹®¼­È­µË´Ï´Ù.
+ëª¨ë“  ì£¼ëª©í•  ë§Œí•œ ë³€ê²½ ì‚¬í•­ì€ ì´ íŒŒì¼ì— ë¬¸ì„œí™”ë©ë‹ˆë‹¤.
 
-ÀÌ ÇÁ·ÎÁ§Æ®´Â [Semantic Versioning](https://semver.org/lang/ko/)À» µû¸¨´Ï´Ù.
-
----
-
-## [1.0.2] - 2025-01-10
-
-### Ãß°¡µÊ (Added)
-- **ÀÚµ¿ ¾÷µ¥ÀÌÆ® ±â´É**
-  - GitHub Releases API ¿¬µ¿
-  - ½ÃÀÛ ½Ã ÀÚµ¿ ¾÷µ¥ÀÌÆ® È®ÀÎ (24½Ã°£ °£°Ý)
-  - ¼öµ¿ ¾÷µ¥ÀÌÆ® È®ÀÎ ¹öÆ°
-  - Material Design ¾÷µ¥ÀÌÆ® ´ÙÀÌ¾ó·Î±×
-  - ÁøÇà·ü Ç¥½Ã¿Í ÇÔ²² ´Ù¿î·Îµå
-  - ÀÚµ¿ ¼³Ä¡ (°ü¸®ÀÚ ±ÇÇÑ ¿äÃ»)
-
-- **¼³Á¤ Ãß°¡**
-  - `CheckForUpdatesOnStartup`: ½ÃÀÛ ½Ã ÀÚµ¿ ¾÷µ¥ÀÌÆ® È®ÀÎ
-  - `LastUpdateCheck`: ¸¶Áö¸· ¾÷µ¥ÀÌÆ® È®ÀÎ ½Ã°£
-
-- **»õ·Î¿î ¼­ºñ½º**
-  - `IUpdateService`: ¾÷µ¥ÀÌÆ® ¼­ºñ½º ÀÎÅÍÆäÀÌ½º
-  - `UpdateService`: GitHub API ±¸Çö
-  - `ReleaseInfo`: ¸±¸®½º Á¤º¸ ¸ðµ¨
-  - `ReleaseAsset`: ´Ù¿î·Îµå ÆÄÀÏ Á¤º¸
-
-### °³¼±µÊ (Improved)
-- MainWindow UI¿¡ Update ¹öÆ° Ãß°¡
-- ¹öÀü Á¤º¸¸¦ Directory.Build.props·Î Áß¾Ó °ü¸®
-- ¹®¼­ ±¸Á¶ °³¼±
-
-### ±â¼ú »ó¼¼
-- GitHub API¸¦ ÅëÇÑ ÃÖ½Å ¸±¸®½º È®ÀÎ
-- ¹öÀü ºñ±³ (v1.0.1 vs v1.0.2)
-- ¼³Ä¡ ÇÁ·Î±×·¥ ÀÚµ¿ ´Ù¿î·Îµå
-- Temp Æú´õ¿¡ ´Ù¿î·Îµå ÀúÀå
-- ¼³Ä¡ ÈÄ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÀÚµ¿ Àç½ÃÀÛ
+ì´ í”„ë¡œì íŠ¸ëŠ” [Semantic Versioning](https://semver.org/lang/ko/)ì„ ë”°ë¦…ë‹ˆë‹¤.
 
 ---
 
-## [1.0.1] - 2025-01-08
+## [1.0.2] - 2025-11-01
 
-### Ãß°¡µÊ (Added)
-- **Ä¿½ºÅÒ Å¸ÀÌÆ²¹Ù**
-  - Material Design ½ºÅ¸ÀÏ Å¸ÀÌÆ²¹Ù
-  - Ã¢ µå·¡±×·Î ÀÌµ¿
-  - ´õºíÅ¬¸¯À¸·Î ÃÖ´ëÈ­/º¹¿ø
-  - È£¹ö È¿°ú°¡ ÀÖ´Â Ã¢ ÄÁÆ®·Ñ ¹öÆ°
-  - ¾Û ¾ÆÀÌÄÜ°ú ºÎÁ¦¸ñ Ç¥½Ã
+### ì¶”ê°€ë¨ (Added)
+- **ìžë™ ì—…ë°ì´íŠ¸ ê¸°ëŠ¥**
+  - GitHub Releases API ì—°ë™
+  - ì‹œìž‘ ì‹œ ìžë™ ì—…ë°ì´íŠ¸ í™•ì¸ (24ì‹œê°„ ê°„ê²©)
+  - ìˆ˜ë™ ì—…ë°ì´íŠ¸ í™•ì¸ ë²„íŠ¼
+  - Material Design ì—…ë°ì´íŠ¸ ë‹¤ì´ì–¼ë¡œê·¸
+  - ì§„í–‰ë¥  í‘œì‹œì™€ í•¨ê»˜ ë‹¤ìš´ë¡œë“œ
+  - ìžë™ ì„¤ì¹˜ (ê´€ë¦¬ìž ê¶Œí•œ ìš”ì²­)
 
-### °³¼±µÊ (Improved)
-- DevExpress NuGet ¼³Á¤ °£¼ÒÈ­
-- ºôµå ÇÁ·Î¼¼½º ¹®¼­È­
-- ¼öµ¿ ºôµå·Î ÀüÈ¯ (CI/CD Á¦°Å)
+- **ì„¤ì • ì¶”ê°€**
+  - `CheckForUpdatesOnStartup`: ì‹œìž‘ ì‹œ ìžë™ ì—…ë°ì´íŠ¸ í™•ì¸
+  - `LastUpdateCheck`: ë§ˆì§€ë§‰ ì—…ë°ì´íŠ¸ í™•ì¸ ì‹œê°„
 
-### ¼öÁ¤µÊ (Fixed)
-- Ã¢ °ü¸® °ü·Ã ¹ö±× ¼öÁ¤
-- API Å° ³ëÃâ º¸¾È ¹®Á¦ ÇØ°á
+- **ìƒˆë¡œìš´ ì„œë¹„ìŠ¤**
+  - `IUpdateService`: ì—…ë°ì´íŠ¸ ì„œë¹„ìŠ¤ ì¸í„°íŽ˜ì´ìŠ¤
+  - `UpdateService`: GitHub API êµ¬í˜„
+  - `ReleaseInfo`: ë¦´ë¦¬ìŠ¤ ì •ë³´ ëª¨ë¸
+  - `ReleaseAsset`: ë‹¤ìš´ë¡œë“œ íŒŒì¼ ì •ë³´
+
+### ê°œì„ ë¨ (Improved)
+- MainWindow UIì— Update ë²„íŠ¼ ì¶”ê°€
+- ë²„ì „ ì •ë³´ë¥¼ Directory.Build.propsë¡œ ì¤‘ì•™ ê´€ë¦¬
+- ë¬¸ì„œ êµ¬ì¡° ê°œì„ 
+
+### ê¸°ìˆ  ìƒì„¸
+- GitHub APIë¥¼ í†µí•œ ìµœì‹  ë¦´ë¦¬ìŠ¤ í™•ì¸
+- ë²„ì „ ë¹„êµ (v1.0.1 vs v1.0.2)
+- ì„¤ì¹˜ í”„ë¡œê·¸ëž¨ ìžë™ ë‹¤ìš´ë¡œë“œ
+- Temp í´ë”ì— ë‹¤ìš´ë¡œë“œ ì €ìž¥
+- ì„¤ì¹˜ í›„ ì• í”Œë¦¬ì¼€ì´ì…˜ ìžë™ ìž¬ì‹œìž‘
 
 ---
 
-## [1.0.0] - 2025-01-01
+## [1.0.1] - 2025-11-01
 
-### Ãß°¡µÊ (Added)
-- **ÇÙ½É ±â´É**
-  - ½Ç½Ã°£ ÆÄÀÏ ½Ã½ºÅÛ °¨½Ã (FileSystemWatcher ±â¹Ý)
-  - ±ÔÄ¢ ±â¹Ý ÀÚµ¿ ºÐ·ù ½Ã½ºÅÛ
-  - ¹Ì¸®º¸±â ¹× ¼öµ¿ ½ÇÇà ±â´É
-  - Undo/Redo ±â´É (ÃÖ´ë 100´Ü°è)
-  - ·Î±× °ü¸® ¹× CSV ³»º¸³»±â
-  - Åë°è ´ë½Ãº¸µå
+### ì¶”ê°€ë¨ (Added)
+- **ì»¤ìŠ¤í…€ íƒ€ì´í‹€ë°”**
+  - Material Design ìŠ¤íƒ€ì¼ íƒ€ì´í‹€ë°”
+  - ì°½ ë“œëž˜ê·¸ë¡œ ì´ë™
+  - ë”ë¸”í´ë¦­ìœ¼ë¡œ ìµœëŒ€í™”/ë³µì›
+  - í˜¸ë²„ íš¨ê³¼ê°€ ìžˆëŠ” ì°½ ì»¨íŠ¸ë¡¤ ë²„íŠ¼
+  - ì•± ì•„ì´ì½˜ê³¼ ë¶€ì œëª© í‘œì‹œ
 
-- **±ÔÄ¢ ¿£Áø**
-  - È®ÀåÀÚ ±â¹Ý ÇÊÅÍ¸µ
-  - ÆÄÀÏ¸í Å°¿öµå Æ÷ÇÔ/Á¦¿Ü Á¶°Ç
-  - ÆÄÀÏ Å©±â ¹üÀ§ Á¶°Ç
-  - »ý¼º/¼öÁ¤ ³¯Â¥ ¹üÀ§ Á¶°Ç
-  - Á¤±Ô½Ä ÆÐÅÏ ¸ÅÄª
-  - ¿ì¼±¼øÀ§ ±â¹Ý ±ÔÄ¢ Àû¿ë
-  - ´ë»ó Æú´õ ÅÛÇÃ¸´ ¸ÅÅ©·Î: {Category}, {Ext}, {YYYY}, {MM}, {DD}
+### ê°œì„ ë¨ (Improved)
+- DevExpress NuGet ì„¤ì • ê°„ì†Œí™”
+- ë¹Œë“œ í”„ë¡œì„¸ìŠ¤ ë¬¸ì„œí™”
+- ìˆ˜ë™ ë¹Œë“œë¡œ ì „í™˜ (CI/CD ì œê±°)
 
-- **±âº» ±ÔÄ¢ ÅÛÇÃ¸´**
+### ìˆ˜ì •ë¨ (Fixed)
+- ì°½ ê´€ë¦¬ ê´€ë ¨ ë²„ê·¸ ìˆ˜ì •
+- API í‚¤ ë…¸ì¶œ ë³´ì•ˆ ë¬¸ì œ í•´ê²°
+
+---
+
+## [1.0.0] - 2025-11-01
+
+### ì¶”ê°€ë¨ (Added)
+- **í•µì‹¬ ê¸°ëŠ¥**
+  - ì‹¤ì‹œê°„ íŒŒì¼ ì‹œìŠ¤í…œ ê°ì‹œ (FileSystemWatcher ê¸°ë°˜)
+  - ê·œì¹™ ê¸°ë°˜ ìžë™ ë¶„ë¥˜ ì‹œìŠ¤í…œ
+  - ë¯¸ë¦¬ë³´ê¸° ë° ìˆ˜ë™ ì‹¤í–‰ ê¸°ëŠ¥
+  - Undo/Redo ê¸°ëŠ¥ (ìµœëŒ€ 100ë‹¨ê³„)
+  - ë¡œê·¸ ê´€ë¦¬ ë° CSV ë‚´ë³´ë‚´ê¸°
+  - í†µê³„ ëŒ€ì‹œë³´ë“œ
+
+- **ê·œì¹™ ì—”ì§„**
+  - í™•ìž¥ìž ê¸°ë°˜ í•„í„°ë§
+  - íŒŒì¼ëª… í‚¤ì›Œë“œ í¬í•¨/ì œì™¸ ì¡°ê±´
+  - íŒŒì¼ í¬ê¸° ë²”ìœ„ ì¡°ê±´
+  - ìƒì„±/ìˆ˜ì • ë‚ ì§œ ë²”ìœ„ ì¡°ê±´
+  - ì •ê·œì‹ íŒ¨í„´ ë§¤ì¹­
+  - ìš°ì„ ìˆœìœ„ ê¸°ë°˜ ê·œì¹™ ì ìš©
+  - ëŒ€ìƒ í´ë” í…œí”Œë¦¿ ë§¤í¬ë¡œ: {Category}, {Ext}, {YYYY}, {MM}, {DD}
+
+- **ê¸°ë³¸ ê·œì¹™ í…œí”Œë¦¿**
   - Documents (pdf, doc, docx, xls, xlsx, ppt, pptx, txt, rtf, odt)
   - Images (jpg, jpeg, png, gif, bmp, svg, webp, ico)
   - Archives (zip, rar, 7z, tar, gz, bz2)
@@ -90,42 +90,42 @@
   - Videos (mp4, avi, mkv, mov, wmv, flv, webm)
   - Audio (mp3, wav, flac, aac, ogg, wma, m4a)
 
-- **ÆÄÀÏ ÀÛ¾÷**
-  - ÀÌµ¿ (Move)
-  - º¹»ç (Copy)
-  - »èÁ¦ (Delete) - ±âº» ºñÈ°¼ºÈ­
-  - ÀÌ¸§ Ãæµ¹ ÇØ°á Àü·« (ÀÚµ¿ ¸®³×ÀÓ, °Ç³Ê¶Ù±â, µ¤¾î¾²±â)
+- **íŒŒì¼ ìž‘ì—…**
+  - ì´ë™ (Move)
+  - ë³µì‚¬ (Copy)
+  - ì‚­ì œ (Delete) - ê¸°ë³¸ ë¹„í™œì„±í™”
+  - ì´ë¦„ ì¶©ëŒ í•´ê²° ì „ëžµ (ìžë™ ë¦¬ë„¤ìž„, ê±´ë„ˆë›°ê¸°, ë®ì–´ì“°ê¸°)
 
-- **UI ÄÄÆ÷³ÍÆ®**
-  - DevExpress ThemedWindow ±â¹Ý ¸ÞÀÎ À©µµ¿ì
-  - DockLayoutManager·Î ±¸¼ºµÈ À¯¿¬ÇÑ ·¹ÀÌ¾Æ¿ô
-  - GridControl·Î ±¸¼ºµÈ ±ÔÄ¢/¹Ì¸®º¸±â/·Î±× Ç¥½Ã
-  - ½Ç½Ã°£ »óÅÂ Ç¥½Ã
-  - Material Design ¾ÆÀÌÄÜ
+- **UI ì»´í¬ë„ŒíŠ¸**
+  - DevExpress ThemedWindow ê¸°ë°˜ ë©”ì¸ ìœˆë„ìš°
+  - DockLayoutManagerë¡œ êµ¬ì„±ëœ ìœ ì—°í•œ ë ˆì´ì•„ì›ƒ
+  - GridControlë¡œ êµ¬ì„±ëœ ê·œì¹™/ë¯¸ë¦¬ë³´ê¸°/ë¡œê·¸ í‘œì‹œ
+  - ì‹¤ì‹œê°„ ìƒíƒœ í‘œì‹œ
+  - Material Design ì•„ì´ì½˜
 
-- **¼³Á¤ °ü¸®**
-  - JSON ±â¹Ý ¼³Á¤ ÀúÀå
-  - °¨½Ã Æú´õ ´ÙÁß ¼±ÅÃ
-  - Ãæµ¹ ÇØ°á Àü·« ¼±ÅÃ
-  - ·Î±× º¸Á¸ Á¤Ã¥ (±âº» 90ÀÏ)
-  - Undo ½ºÅÃ Å©±â ¼³Á¤
+- **ì„¤ì • ê´€ë¦¬**
+  - JSON ê¸°ë°˜ ì„¤ì • ì €ìž¥
+  - ê°ì‹œ í´ë” ë‹¤ì¤‘ ì„ íƒ
+  - ì¶©ëŒ í•´ê²° ì „ëžµ ì„ íƒ
+  - ë¡œê·¸ ë³´ì¡´ ì •ì±… (ê¸°ë³¸ 90ì¼)
+  - Undo ìŠ¤íƒ í¬ê¸° ì„¤ì •
 
-- **¾ÆÅ°ÅØÃ³**
-  - Microsoft.Extensions.Hosting ±â¹Ý DI ÄÁÅ×ÀÌ³Ê
-  - Clean Architecture (Domain-Infrastructure-Application ºÐ¸®)
-  - MVVM ÆÐÅÏ (DevExpress MVVM Framework)
-  - ºñµ¿±â ÆÄÀÏ I/O
-  - ¾ÈÁ¤ÀûÀÎ ÆÄÀÏ Àá±Ý °¨Áö
+- **ì•„í‚¤í…ì²˜**
+  - Microsoft.Extensions.Hosting ê¸°ë°˜ DI ì»¨í…Œì´ë„ˆ
+  - Clean Architecture (Domain-Infrastructure-Application ë¶„ë¦¬)
+  - MVVM íŒ¨í„´ (DevExpress MVVM Framework)
+  - ë¹„ë™ê¸° íŒŒì¼ I/O
+  - ì•ˆì •ì ì¸ íŒŒì¼ ìž ê¸ˆ ê°ì§€
 
-- **Å×½ºÆ®**
-  - xUnit ±â¹Ý ´ÜÀ§ Å×½ºÆ®
-  - FluentAssertions ±â¹Ý Å×½ºÆ®
-  - RuleEngine Å×½ºÆ® (10°³)
-  - FileOpService Å×½ºÆ® (8°³)
-  - UndoService Å×½ºÆ® (5°³)
-  - **Å×½ºÆ® Ä¿¹ö¸®Áö**: 85%+
+- **í…ŒìŠ¤íŠ¸**
+  - xUnit ê¸°ë°˜ ë‹¨ìœ„ í…ŒìŠ¤íŠ¸
+  - FluentAssertions ê¸°ë°˜ í…ŒìŠ¤íŠ¸
+  - RuleEngine í…ŒìŠ¤íŠ¸ (10ê°œ)
+  - FileOpService í…ŒìŠ¤íŠ¸ (8ê°œ)
+  - UndoService í…ŒìŠ¤íŠ¸ (5ê°œ)
+  - **í…ŒìŠ¤íŠ¸ ì»¤ë²„ë¦¬ì§€**: 85%+
 
-### ±â¼ú ½ºÅÃ
+### ê¸°ìˆ  ìŠ¤íƒ
 - C# 12
 - .NET 8 (WPF)
 - DevExpress WPF Controls v25.1
@@ -133,36 +133,36 @@
 - xUnit 2.6.2
 - FluentAssertions 6.12.0
 
-### º¸¾È
-- ¸ðµç µ¥ÀÌÅÍ ·ÎÄÃ ÀúÀå (³×Æ®¿öÅ© Åë½Å ¾øÀ½)
-- ¹Î°¨ÇÑ ÀÛ¾÷ 2´Ü°è È®ÀÎ
-- ¼³Á¤ ÆÄÀÏ ¹é¾÷ ÀÚµ¿ »ý¼º
+### ë³´ì•ˆ
+- ëª¨ë“  ë°ì´í„° ë¡œì»¬ ì €ìž¥ (ë„¤íŠ¸ì›Œí¬ í†µì‹  ì—†ìŒ)
+- ë¯¼ê°í•œ ìž‘ì—… 2ë‹¨ê³„ í™•ì¸
+- ì„¤ì • íŒŒì¼ ë°±ì—… ìžë™ ìƒì„±
 
-### µ¥ÀÌÅÍ ÀúÀå À§Ä¡
+### ë°ì´í„° ì €ìž¥ ìœ„ì¹˜
 ```
 %LocalAppData%\DownSort\
-¦§¦¡¦¡ settings.json
-¦§¦¡¦¡ settings.json.bak
-¦§¦¡¦¡ rules.json
-¦§¦¡¦¡ rules.json.bak
-¦¦¦¡¦¡ logs.json
+â”œâ”€â”€ settings.json
+â”œâ”€â”€ settings.json.bak
+â”œâ”€â”€ rules.json
+â”œâ”€â”€ rules.json.bak
+â””â”€â”€ logs.json
 ```
 
-### ¾Ë·ÁÁø Á¦ÇÑ »çÇ×
-- Windows Àü¿ë (WPF ±â¹Ý)
-- ³×Æ®¿öÅ© µå¶óÀÌºê ¼º´É ÀúÇÏ °¡´É
-- Junction/½Éº¼¸¯ ¸µÅ© °Ç³Ê¶Ü
+### ì•Œë ¤ì§„ ì œí•œ ì‚¬í•­
+- Windows ì „ìš© (WPF ê¸°ë°˜)
+- ë„¤íŠ¸ì›Œí¬ ë“œë¼ì´ë¸Œ ì„±ëŠ¥ ì €í•˜ ê°€ëŠ¥
+- Junction/ì‹¬ë³¼ë¦­ ë§í¬ ê±´ë„ˆëœ€
 
 ---
 
-## [0.9.0] - 2024-12-20 (³»ºÎ º£Å¸)
+## [0.9.0] - 2024-12-20 (ë‚´ë¶€ ë² íƒ€)
 
-### Ãß°¡µÊ
-- ÃÊ±â ÇÁ·ÎÅäÅ¸ÀÔ
-- ±âº» ÆÄÀÏ ÀÌµ¿ ±â´É
-- °£´ÜÇÑ ±ÔÄ¢ ¿£Áø
+### ì¶”ê°€ë¨
+- ì´ˆê¸° í”„ë¡œí† íƒ€ìž…
+- ê¸°ë³¸ íŒŒì¼ ì´ë™ ê¸°ëŠ¥
+- ê°„ë‹¨í•œ ê·œì¹™ ì—”ì§„
 
-### º¯°æµÊ
-- ¾ÆÅ°ÅØÃ³ Clean Architecture·Î ¸®ÆÑÅÍ¸µ
+### ë³€ê²½ë¨
+- ì•„í‚¤í…ì²˜ Clean Architectureë¡œ ë¦¬íŒ©í„°ë§
 
 ---
