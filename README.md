@@ -9,7 +9,6 @@
 [![DevExpress](https://img.shields.io/badge/DevExpress-25.1-FF7200)](https://www.devexpress.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
 [![Release](https://img.shields.io/github/v/release/BaeTab/downsort)](https://github.com/BaeTab/downsort/releases/latest)
-[![Build](https://github.com/BaeTab/downsort/actions/workflows/ci.yml/badge.svg)](https://github.com/BaeTab/downsort/actions/workflows/ci.yml)
 
 다운로드 폴더에 쌓이는 파일들을 규칙 기반으로 자동/수동 정리하는 데스크톱 애플리케이션
 
@@ -80,9 +79,9 @@
 
 ### 옵션 1: Windows 설치 프로그램 (권장)
 
-**[최신 릴리스 다운로드](https://github.com/BaeTab/downsort/releases/latest)** - v1.0.0
+**[최신 릴리스 다운로드](https://github.com/BaeTab/downsort/releases/latest)**
 
-1. `DownSort-Setup-1.0.0.exe` 다운로드 (57.48 MB)
+1. `DownSort-Setup-{version}.exe` 다운로드
 2. 실행 파일 더블클릭
 3. 설치 마법사 따라하기
 
@@ -92,7 +91,7 @@
 
 ### 옵션 2: 수동 설치 (ZIP)
 
-1. [DownSort-v1.0.0-win-x64.zip](https://github.com/BaeTab/downsort/releases/latest) 다운로드 (80.59 MB)
+1. `DownSort-v{version}-win-x64.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. `Downsort.exe` 실행
 
@@ -137,7 +136,6 @@ Recent Activity 패널에서 처리된 파일 확인 -> 더블클릭으로 폴�
 | Microsoft.Extensions | 9.0 | 의존성 주입, 구성 관리 |
 | xUnit | 2.6 | 단위 테스트 |
 | FluentAssertions | 6.12 | 테스트 어설션 |
-| GitHub Actions | - | CI/CD 자동화 |
 
 ### 프로젝트 구조
 
@@ -156,13 +154,10 @@ DownSort.sln
 │   ├── Rules/                   # 규칙 엔진
 │   └── Services/                # 서비스 구현
 ├── DownSort.Tests/              # 단위 및 통합 테스트 (23개)
-├── Setup/                       # 설치 프로그램 스크립트
-│   ├── DownSort.iss             # Inno Setup 스크립트
-│   ├── build-installer.ps1      # 빌드 자동화
-│   └── build.bat                # 간편 빌드
-└── .github/workflows/           # GitHub Actions
-    ├── ci.yml                   # CI 워크플로우
-    └── release.yml              # 릴리스 워크플로우
+└── Setup/                       # 설치 프로그램 스크립트
+    ├── DownSort.iss             # Inno Setup 스크립트
+    ├── build-installer.ps1      # 빌드 자동화
+    └── build.bat                # 간편 빌드
 ```
 
 ### 빌드 및 실행
@@ -171,6 +166,15 @@ DownSort.sln
 - Visual Studio 2022 이상
 - .NET 8 SDK
 - DevExpress WPF Controls v25.1 (NuGet)
+- DevExpress NuGet feed 설정 필요
+
+#### DevExpress 설정
+```powershell
+# DevExpress NuGet source 추가
+dotnet nuget add source "https://nuget.devexpress.com/{YOUR_API_KEY}/api/v3/index.json" --name DevExpress
+```
+
+API Key 획득: https://nuget.devexpress.com
 
 #### 빌드
 ```bash
@@ -188,37 +192,14 @@ dotnet run --project Downsort/Downsort.csproj
 #### 설치 프로그램 생성
 ```powershell
 cd Setup
-.\build-installer.ps1 -CreateInstaller
+.\build-installer.ps1 -Version "1.0.2" -CreateInstaller
 ```
 
 생성된 파일:
-- `Installer/DownSort-Setup-1.0.0.exe` (57.48 MB)
-- `Installer/DownSort-v1.0.0-win-x64.zip` (80.59 MB)
+- `Installer/DownSort-Setup-{version}.exe` - Windows 설치 프로그램
+- `Installer/DownSort-v{version}-win-x64.zip` - Portable 버전
 
-더 자세한 내용은 [빌드 가이드](Setup/README.md)를 참조하세요.
-
-### CI/CD (자동 빌드 및 릴리스)
-
-#### 자동 빌드
-- 모든 push 및 PR에서 자동 빌드
-- 23개 단위 테스트 자동 실행
-- 빌드 상태는 상단 배지에서 확인
-
-#### 자동 릴리스
-```bash
-# 새 버전 릴리스
-git tag -a v1.0.1 -m "Release v1.0.1"
-git push origin v1.0.1
-```
-
-GitHub Actions가 자동으로:
-1. 빌드 및 테스트
-2. Windows 설치 프로그램 생성
-3. ZIP 아카이브 생성
-4. GitHub Release 생성
-5. 파일 자동 업로드
-
-더 자세한 내용은 [릴리스 가이드](.github/RELEASE_GUIDE.md) 또는 [빠른 참조](.github/QUICK_RELEASE.md)를 참조하세요.
+더 자세한 내용은 [수동 빌드 가이드](MANUAL_BUILD_GUIDE.md)를 참조하세요.
 
 ---
 
@@ -300,8 +281,6 @@ GitHub Actions가 자동으로:
 4. 브랜치에 Push (`git push origin feature/AmazingFeature`)
 5. Pull Request 생성
 
-모든 PR은 자동으로 빌드 및 테스트됩니다.
-
 ---
 
 ## 제작
@@ -311,12 +290,23 @@ GitHub Actions가 자동으로:
 - **디자인**: Material Design
 - **개발 도구**: Visual Studio 2022
 - **버전 관리**: Git + GitHub
-- **CI/CD**: GitHub Actions
 - **개발자**: BaeTab
 
 ---
 
 ## 변경 이력
+
+### v1.0.1 (2024-01-10)
+
+#### 추가
+- Material Design 커스텀 타이틀바
+- 드래그 & 더블클릭으로 창 이동/최대화
+- 호버 효과가 있는 창 컨트롤 버튼
+
+#### 개선
+- DevExpress NuGet feed 설정 간소화
+- 수동 빌드 프로세스로 전환
+- 문서 구조 개선
 
 ### v1.0.0 (2024-11-01) - 초기 릴리스
 
@@ -329,13 +319,6 @@ GitHub Actions가 자동으로:
 - Recent Activity 패널 (실시간 로그, 폴더 바로 가기)
 - Material Design UI
 - Windows 설치 프로그램 (Inno Setup)
-- GitHub Actions CI/CD
-
-#### 기술
-- .NET 8 + WPF
-- DevExpress 25.1
-- MVVM 패턴
-- 85%+ 테스트 커버리지
 
 더 자세한 내용은 [CHANGELOG.md](CHANGELOG.md)를 참조하세요.
 
@@ -345,10 +328,8 @@ GitHub Actions가 자동으로:
 
 - [사용자 가이드](USER_GUIDE.md)
 - [문제 해결](Setup/TROUBLESHOOTING.md)
-- [빌드 가이드](Setup/README.md)
-- [릴리스 가이드](.github/RELEASE_GUIDE.md)
+- [수동 빌드 가이드](MANUAL_BUILD_GUIDE.md)
 - [GitHub Issues](https://github.com/BaeTab/downsort/issues)
-- [GitHub Actions](https://github.com/BaeTab/downsort/actions)
 - [Releases](https://github.com/BaeTab/downsort/releases)
 - 이메일: b_h_woo@naver.com
 
