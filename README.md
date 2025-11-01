@@ -12,7 +12,7 @@
 
 다운로드 폴더에 쌓이는 파일들을 규칙 기반으로 자동/수동 정리하는 데스크톱 애플리케이션
 
-[다운로드](https://github.com/BaeTab/downsort/releases/latest) · [사용 가이드](USER_GUIDE.md) · [문제 해결](Setup/TROUBLESHOOTING.md) · [변경 이력](CHANGELOG.md)
+[다운로드](https://github.com/BaeTab/downsort/releases/latest) · [사용 가이드](USER_GUIDE.md) · [빌드 가이드](BUILD.md) · [변경 이력](CHANGELOG.md)
 
 </div>
 
@@ -199,7 +199,7 @@ cd Setup
 - `Installer/DownSort-Setup-{version}.exe` - Windows 설치 프로그램
 - `Installer/DownSort-v{version}-win-x64.zip` - Portable 버전
 
-더 자세한 내용은 [수동 빌드 가이드](MANUAL_BUILD_GUIDE.md)를 참조하세요.
+더 자세한 내용은 [빌드 가이드](BUILD.md)를 참조하세요.
 
 ---
 
@@ -243,7 +243,7 @@ cd Setup
 - 설정에서 동시 처리 작업 수 조정
 - 감시하는 폴더 수 줄이기
 
-더 많은 문제 해결 방법은 [문제 해결 가이드](Setup/TROUBLESHOOTING.md)를 참조하세요.
+더 많은 문제 해결 방법은 [Setup/TROUBLESHOOTING.md](Setup/TROUBLESHOOTING.md)를 참조하세요.
 
 ---
 
@@ -327,8 +327,8 @@ cd Setup
 ## 지원
 
 - [사용자 가이드](USER_GUIDE.md)
+- [빌드 가이드](BUILD.md)
 - [문제 해결](Setup/TROUBLESHOOTING.md)
-- [수동 빌드 가이드](MANUAL_BUILD_GUIDE.md)
 - [GitHub Issues](https://github.com/BaeTab/downsort/issues)
 - [Releases](https://github.com/BaeTab/downsort/releases)
 - 이메일: b_h_woo@naver.com
