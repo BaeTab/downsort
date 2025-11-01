@@ -8,10 +8,11 @@
 [![WPF](https://img.shields.io/badge/WPF-Windows-0078D4?logo=windows)](https://docs.microsoft.com/dotnet/desktop/wpf/)
 [![DevExpress](https://img.shields.io/badge/DevExpress-25.1-FF7200)](https://www.devexpress.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
+[![Release](https://img.shields.io/github/v/release/BaeTab/downsort)](https://github.com/BaeTab/downsort/releases/latest)
 
 다운로드 폴더에 쌓이는 파일들을 규칙 기반으로 자동/수동 정리하는 데스크톱 애플리케이션
 
-[다운로드](#설치) · [사용 가이드](USER_GUIDE.md) · [문제 해결](Setup/TROUBLESHOOTING.md) · [변경 이력](CHANGELOG.md)
+[다운로드](https://github.com/BaeTab/downsort/releases/latest) · [사용 가이드](USER_GUIDE.md) · [문제 해결](Setup/TROUBLESHOOTING.md) · [변경 이력](CHANGELOG.md)
 
 </div>
 
@@ -61,10 +62,14 @@
 ## 스크린샷
 
 ### 메인 화면 (Modern Material Design)
-```
-<img width="1489" height="838" alt="image" src="https://github.com/user-attachments/assets/a209e3a2-b624-4449-b9b4-d34eca1c4891" />
-```
 
+![DownSort Main Window](https://github.com/user-attachments/assets/a209e3a2-b624-4449-b9b4-d34eca1c4891)
+
+> **스크린샷 추가 방법**:
+> 1. 스크린샷 캡처 (Windows + Shift + S)
+> 2. GitHub Issues 페이지로 이동
+> 3. 새 Issue 작성 창에 이미지 붙여넣기 (Ctrl + V)
+> 4. 자동 생성된 URL 복사하여 README에 추가
 
 ### 주요 디자인 특징
 - Material Design 색상 팔레트
@@ -80,8 +85,10 @@
 
 ### 옵션 1: Windows 설치 프로그램 (권장)
 
-1. [최신 릴리스 다운로드](https://github.com/yourusername/downsort/releases)
-2. `DownSort-Setup-1.0.0.exe` 실행
+**[최신 릴리스 다운로드](https://github.com/BaeTab/downsort/releases/latest)** - v1.0.0
+
+1. `DownSort-Setup-1.0.0.exe` 다운로드 (57.48 MB)
+2. 실행 파일 더블클릭
 3. 설치 마법사 따라하기
 
 **요구사항**:
@@ -90,7 +97,7 @@
 
 ### 옵션 2: 수동 설치 (ZIP)
 
-1. `DownSort-v1.0.0-win-x64.zip` 다운로드
+1. [DownSort-v1.0.0-win-x64.zip](https://github.com/BaeTab/downsort/releases/latest) 다운로드 (80.59 MB)
 2. 원하는 폴더에 압축 해제
 3. `Downsort.exe` 실행
 
@@ -262,7 +269,7 @@ cd Setup
 
 ## 기여
 
-버그 리포트 및 기능 제안은 [GitHub Issues](https://github.com/yourusername/downsort/issues)를 통해 제출해주세요.
+버그 리포트 및 기능 제안은 [GitHub Issues](https://github.com/BaeTab/downsort/issues)를 통해 제출해주세요.
 
 ### 개발 가이드
 1. 이 저장소를 Fork
@@ -280,6 +287,7 @@ cd Setup
 - **디자인**: Material Design
 - **개발 도구**: Visual Studio 2022
 - **버전 관리**: Git
+- **개발자**: BaeTab
 
 ---
 
@@ -311,12 +319,19 @@ cd Setup
 
 - [사용자 가이드](USER_GUIDE.md)
 - [문제 해결](Setup/TROUBLESHOOTING.md)
-- [GitHub Issues](https://github.com/baetab/downsort/issues)
+- [GitHub Issues](https://github.com/BaeTab/downsort/issues)
+- [Releases](https://github.com/BaeTab/downsort/releases)
 - 이메일: b_h_woo@naver.com
 
 ---
 
-## 이 프로젝트가 유용했다면 Star를 눌러주세요!
+## Star History
+
+이 프로젝트가 유용했다면 Star를 눌러주세요!
+
+[![Star History Chart](https://api.star-history.com/svg?repos=BaeTab/downsort&type=Date)](https://star-history.com/#BaeTab/downsort&Date)
+
+---
 
 <div align="center">
 
