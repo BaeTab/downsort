@@ -13,8 +13,36 @@ env:
   RUNTIME: 'win-x64'
 
 jobs:
+  check-secrets:
+    name: Check DevExpress Secrets
+    runs-on: windows-latest
+    outputs:
+      has_secrets: ${{ steps.check.outputs.has_secrets }}
+    
+    steps:
+    - name: Check if DevExpress secrets are configured
+      id: check
+      run: |
+        $hasSecrets = "${{ secrets.DEVEXPRESS_NUGET_KEY }}" -ne ""
+        echo "has_secrets=$hasSecrets" >> $env:GITHUB_OUTPUT
+        
+        if (-not $hasSecrets) {
+          Write-Host "? DEVEXPRESS_NUGET_KEY secret is not configured" -ForegroundColor Red
+          Write-Host ""
+          Write-Host "To create releases, you need to:" -ForegroundColor Yellow
+          Write-Host "1. Go to: https://github.com/${{ github.repository }}/settings/secrets/actions"
+          Write-Host "2. Add secret: DEVEXPRESS_NUGET_KEY"
+          Write-Host "3. See .github/DEVEXPRESS_SETUP.md for details"
+          Write-Host ""
+          exit 1
+        } else {
+          Write-Host "? DevExpress secrets are configured" -ForegroundColor Green
+        }
+      shell: pwsh
+
   build-and-test:
     name: Build and Test
+    needs: check-secrets
     runs-on: windows-latest
     
     steps:
@@ -42,7 +70,6 @@ jobs:
         # List sources
         dotnet nuget list source
       shell: pwsh
-      continue-on-error: true
         
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_PATH }}
