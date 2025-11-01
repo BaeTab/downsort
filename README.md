@@ -1,6 +1,6 @@
-# DownSort ???
+# DownSort
 
-**스마트 파일 자동 정리 애플리케이션**
+**Smart File Organizer for Windows**
 
 <div align="center">
 
@@ -9,22 +9,22 @@
 [![DevExpress](https://img.shields.io/badge/DevExpress-25.1-FF7200)](https://www.devexpress.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
 
-다운로드 폴더에 쌓이는 파일들을 규칙 기반으로 **자동/수동**으로 정리하는 데스크톱 애플리케이션
+다운로드 폴더에 쌓이는 파일들을 규칙 기반으로 자동/수동 정리하는 데스크톱 애플리케이션
 
-[다운로드](#-설치) · [사용 가이드](USER_GUIDE.md) · [문제 해결](Setup/TROUBLESHOOTING.md) · [변경 이력](CHANGELOG.md)
+[다운로드](#설치) · [사용 가이드](USER_GUIDE.md) · [문제 해결](Setup/TROUBLESHOOTING.md) · [변경 이력](CHANGELOG.md)
 
 </div>
 
 ---
 
-## ? 주요 기능
+## 주요 기능
 
-### ?? **실시간 파일 감시**
+### 실시간 파일 감시
 - 다운로드 폴더를 실시간으로 모니터링
 - 새 파일 생성 시 자동으로 규칙에 따라 정리
 - 파일 잠금 감지 및 다운로드 완료 후 처리
 
-### ?? **규칙 기반 자동 분류**
+### 규칙 기반 자동 분류
 - 6개 기본 규칙 제공 (Documents, Images, Archives, Videos, Audio, Installers)
 - 사용자 정의 규칙 생성
   - 확장자 필터
@@ -35,64 +35,64 @@
 - 우선순위 설정
 - 대상 폴더 템플릿 매크로: `{Category}`, `{YYYY}`, `{MM}`, `{Ext}` 등
 
-### ??? **미리보기 및 수동 실행**
+### 미리보기 및 수동 실행
 - "Scan" 버튼으로 현재 폴더 분석
 - DevExpress GridControl로 예상 작업 표시
 - 선택적으로 특정 파일만 실행
 
-### ? **실시간 활동 로그** (NEW!)
+### 실시간 활동 로그 (NEW!)
 - 처리된 파일을 Recent Activity 패널에 실시간 표시
 - 색상 코딩: 성공(녹색), 실패(빨간색), 건너뛰기(주황색)
 - 더블클릭 또는 "Open Folder" 버튼으로 파일 위치로 즉시 이동
 - 최근 100개 항목 자동 유지
 
-### ?? **실행 취소 (Undo)**
+### 실행 취소 (Undo)
 - 최근 이동 작업을 원복
 - 설정 가능한 Undo 스택 (기본 100개)
 - 이름 충돌 처리 포함
 
-### ?? **로그 및 통계**
+### 로그 및 통계
 - 모든 작업 로그 기록
 - 순환 보존 정책 (기본 90일)
 - 기간별/유형별 처리량 통계
 
 ---
 
-## ?? 스크린샷
+## 스크린샷
 
 ### 메인 화면 (Modern Material Design)
 ```
-┌──────────────────────────────────────────────────────────────┐
-│  ?? Watch  ?? Scan  ?? Execute  ?? Undo  ? Clear          │
-│                                                               │
-│  [Status: Ready]  [Done: 5]  [Queue: 0]                      │
-├──────────┬────────────────────────────────────────────────────┤
-│  Rules   │          Preview / Results                        │
-│          │                                                    │
-│ ? Docs   │  ? file.pdf  pdf  1MB  Move  C:\Docs\file.pdf   │
-│ ? Images │  ? photo.jpg jpg  2MB  Move  C:\Images\...       │
-│ ? Arch   │                                                    │
-│ ? Install├────────────────────────────────────────────────────│
-│ ? Videos │          Recent Activity                          │
-│ ? Audio  │                                                    │
-│          │ 14:30  Move  doc.pdf   C:\Docs\  ??Success [Open] │
-│          │ 14:29  Move  pic.jpg   C:\Images\ ??Success [Open]│
-├──────────┴────────────────────────────────────────────────────┤
-│ ?? Status: Ready                    Monitoring: ON           │
-└──────────────────────────────────────────────────────────────┘
++----------------------------------------------------------+
+|  Watch  Scan  Execute  Undo  Clear                      |
+|                                                          |
+|  [Status: Ready]  [Done: 5]  [Queue: 0]                 |
++----------+-----------------------------------------------+
+|  Rules   |          Preview / Results                   |
+|          |                                               |
+| v Docs   |  [v] file.pdf  pdf  1MB  Move  C:\Docs\...  |
+| v Images |  [v] photo.jpg jpg  2MB  Move  C:\Images\.. |
+| v Arch   |                                               |
+| v Videos +-----------------------------------------------+
+| v Audio  |          Recent Activity                     |
+|          |                                               |
+|          | 14:30  Move  doc.pdf   C:\Docs\  [Success]  |
+|          | 14:29  Move  pic.jpg   C:\Images\ [Success] |
++----------+-----------------------------------------------+
+| Status: Ready                    Monitoring: ON         |
++----------------------------------------------------------+
 ```
 
 ### 주요 디자인 특징
-- ? **Material Design** 색상 팔레트
-- ? **SVG 벡터 아이콘** (Watch, Scan, Execute, Undo, Clear)
-- ? **그라디언트 & 그림자** 효과
-- ? **색상 코딩 시스템** (Success/Failed/Skipped)
-- ? **실시간 상태 표시** (Live Status Indicator)
-- ? **반응형 레이아웃** (DockLayoutManager)
+- Material Design 색상 팔레트
+- SVG 벡터 아이콘 (Watch, Scan, Execute, Undo, Clear)
+- 그라디언트 & 그림자 효과
+- 색상 코딩 시스템 (Success/Failed/Skipped)
+- 실시간 상태 표시 (Live Status Indicator)
+- 반응형 레이아웃 (DockLayoutManager)
 
 ---
 
-## ?? 설치
+## 설치
 
 ### 옵션 1: Windows 설치 프로그램 (권장)
 
@@ -112,33 +112,33 @@
 
 ---
 
-## ?? 빠른 시작
+## 빠른 시작
 
 ### 1. 첫 실행
 ```
-애플리케이션 실행 → 기본 규칙 자동 생성 → 감시 폴더 = 다운로드 폴더
+애플리케이션 실행 -> 기본 규칙 자동 생성 -> 감시 폴더 = 다운로드 폴더
 ```
 
 ### 2. 자동 정리 활성화
 ```
-"Watch" 버튼 클릭 → 실시간 감시 시작 → 새 파일 자동 정리
+"Watch" 버튼 클릭 -> 실시간 감시 시작 -> 새 파일 자동 정리
 ```
 
 ### 3. 수동 정리
 ```
-"Scan" 버튼 → 미리보기 확인 → 파일 선택 → "Execute" 클릭
+"Scan" 버튼 -> 미리보기 확인 -> 파일 선택 -> "Execute" 클릭
 ```
 
 ### 4. 활동 확인
 ```
-Recent Activity 패널에서 처리된 파일 확인 → 더블클릭으로 폴더 열기
+Recent Activity 패널에서 처리된 파일 확인 -> 더블클릭으로 폴더 열기
 ```
 
 더 자세한 내용은 [사용자 가이드](USER_GUIDE.md)를 참조하세요.
 
 ---
 
-## ??? 개발자용
+## 개발자용
 
 ### 기술 스택
 
@@ -209,9 +209,9 @@ cd Setup
 
 ---
 
-## ?? 데이터 저장 위치
+## 데이터 저장 위치
 
-모든 설정과 로그는 **로컬에만** 저장됩니다:
+모든 설정과 로그는 로컬에만 저장됩니다:
 
 ```
 %LocalAppData%\DownSort\
@@ -224,17 +224,17 @@ cd Setup
 
 ---
 
-## ?? 보안 및 프라이버시
+## 보안 및 프라이버시
 
-- ? 모든 데이터는 로컬에만 저장
-- ? 네트워크 통신 없음
-- ? 클라우드 동기화 없음
-- ? 텔레메트리 없음
-- ? 삭제 작업은 기본적으로 비활성화 및 2단계 확인
+- 모든 데이터는 로컬에만 저장
+- 네트워크 통신 없음
+- 클라우드 동기화 없음
+- 텔레메트리 없음
+- 삭제 작업은 기본적으로 비활성화 및 2단계 확인
 
 ---
 
-## ?? 문제 해결
+## 문제 해결
 
 ### 파일이 정리되지 않는 경우
 1. 규칙이 활성화되어 있는지 확인
@@ -253,7 +253,7 @@ cd Setup
 
 ---
 
-## ?? 테스트 커버리지
+## 테스트 커버리지
 
 | 프로젝트 | 테스트 수 | 커버리지 |
 |---------|----------|---------|
@@ -262,21 +262,21 @@ cd Setup
 | **전체** | **23개** | **85%+** |
 
 주요 테스트:
-- ? RuleEngine (매칭, 우선순위, 템플릿)
-- ? FileOpService (이동, 복사, 삭제, 충돌)
-- ? UndoService (단일/다중 Undo)
-- ? FileWatcherService (실시간 감시)
-- ? 엣지 케이스 및 오류 처리
+- RuleEngine (매칭, 우선순위, 템플릿)
+- FileOpService (이동, 복사, 삭제, 충돌)
+- UndoService (단일/다중 Undo)
+- FileWatcherService (실시간 감시)
+- 엣지 케이스 및 오류 처리
 
 ---
 
-## ?? 라이선스
+## 라이선스
 
 이 프로젝트는 [MIT 라이선스](LICENSE.txt) 하에 배포됩니다.
 
 ---
 
-## ?? 기여
+## 기여
 
 버그 리포트 및 기능 제안은 [GitHub Issues](https://github.com/yourusername/downsort/issues)를 통해 제출해주세요.
 
@@ -289,7 +289,7 @@ cd Setup
 
 ---
 
-## ????? 제작
+## 제작
 
 - **아키텍처**: Clean Architecture (Domain-Driven Design)
 - **UI 프레임워크**: DevExpress WPF Controls
@@ -299,45 +299,45 @@ cd Setup
 
 ---
 
-## ?? 변경 이력
+## 변경 이력
 
 ### v1.0.0 (2024-11-01) - 초기 릴리스
 
 #### 추가
-- ? 기본 파일 정리 기능
-- ? 6개 기본 규칙 (Documents, Images, Archives, Videos, Audio, Installers)
-- ? 규칙 엔진 (조건 매칭, 우선순위)
-- ? 실시간 파일 감시
-- ? Undo 기능 (최대 100개)
-- ? Recent Activity 패널 (실시간 로그, 폴더 바로 가기)
-- ? Material Design UI
-- ? Windows 설치 프로그램 (Inno Setup)
+- 기본 파일 정리 기능
+- 6개 기본 규칙 (Documents, Images, Archives, Videos, Audio, Installers)
+- 규칙 엔진 (조건 매칭, 우선순위)
+- 실시간 파일 감시
+- Undo 기능 (최대 100개)
+- Recent Activity 패널 (실시간 로그, 폴더 바로 가기)
+- Material Design UI
+- Windows 설치 프로그램 (Inno Setup)
 
 #### 기술
-- ?? .NET 8 + WPF
-- ?? DevExpress 25.1
-- ?? MVVM 패턴
-- ?? 85%+ 테스트 커버리지
+- .NET 8 + WPF
+- DevExpress 25.1
+- MVVM 패턴
+- 85%+ 테스트 커버리지
 
 더 자세한 내용은 [CHANGELOG.md](CHANGELOG.md)를 참조하세요.
 
 ---
 
-## ?? 지원
+## 지원
 
-- ?? [사용자 가이드](USER_GUIDE.md)
-- ?? [문제 해결](Setup/TROUBLESHOOTING.md)
-- ? [GitHub Issues](https://github.com/yourusername/downsort/issues)
-- ?? 이메일: support@downsort.com
+- [사용자 가이드](USER_GUIDE.md)
+- [문제 해결](Setup/TROUBLESHOOTING.md)
+- [GitHub Issues](https://github.com/baetab/downsort/issues)
+- 이메일: b_h_woo@naver.com
 
 ---
 
-## ? 이 프로젝트가 유용했다면 Star를 눌러주세요!
+## 이 프로젝트가 유용했다면 Star를 눌러주세요!
 
 <div align="center">
 
-Made with ?? by DownSort Team
+Made with :heart: by BaeTab
 
-[? 맨 위로 이동](#downsort-)
+[맨 위로 이동](#downsort)
 
 </div>
