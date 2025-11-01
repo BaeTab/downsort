@@ -25,6 +25,17 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: Setup DevExpress NuGet source
+      run: |
+        # Add DevExpress NuGet source
+        dotnet nuget add source https://nuget.devexpress.com/api/v3/index.json `
+          --name DevExpress `
+          --username ${{ secrets.DEVEXPRESS_NUGET_USERNAME }} `
+          --password ${{ secrets.DEVEXPRESS_NUGET_KEY }} `
+          --store-password-in-clear-text
+      shell: pwsh
+      continue-on-error: true
         
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_PATH }}
@@ -48,6 +59,17 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: Setup DevExpress NuGet source
+      run: |
+        # Add DevExpress NuGet source
+        dotnet nuget add source https://nuget.devexpress.com/api/v3/index.json `
+          --name DevExpress `
+          --username ${{ secrets.DEVEXPRESS_NUGET_USERNAME }} `
+          --password ${{ secrets.DEVEXPRESS_NUGET_KEY }} `
+          --store-password-in-clear-text
+      shell: pwsh
+      continue-on-error: true
         
     - name: Get version from tag
       id: get_version
