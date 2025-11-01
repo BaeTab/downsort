@@ -65,12 +65,6 @@
 
 ![DownSort Main Window](https://github.com/user-attachments/assets/a209e3a2-b624-4449-b9b4-d34eca1c4891)
 
-> **스크린샷 추가 방법**:
-> 1. 스크린샷 캡처 (Windows + Shift + S)
-> 2. GitHub Issues 페이지로 이동
-> 3. 새 Issue 작성 창에 이미지 붙여넣기 (Ctrl + V)
-> 4. 자동 생성된 URL 복사하여 README에 추가
-
 ### 주요 디자인 특징
 - Material Design 색상 팔레트
 - SVG 벡터 아이콘 (Watch, Scan, Execute, Undo, Clear)
