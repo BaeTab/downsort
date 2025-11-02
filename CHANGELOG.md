@@ -6,6 +6,27 @@
 
 ---
 
+## [1.0.3] - 2025-11-01
+
+### 추가됨 (Added)
+- **시스템 트레이 기능**
+  - 최소화 시 트레이로 이동 (작업 표시줄에서 제거)
+  - 트레이 아이콘 클릭으로 빠른 복원
+  - 우클릭 컨텍스트 메뉴 (열기/종료)
+  - X 버튼 클릭 시 트레이로 최소화 (완전 종료 아님)
+  - 트레이 최소화 시 풍선 알림
+
+### 개선됨 (Improved)
+- 백그라운드 실행 중에도 파일 감시 지속
+- 사용자 경험 개선 (작업 표시줄 정리)
+
+### 기술 상세
+- Hardcodet.NotifyIcon.Wpf 패키지 활용
+- TaskbarIcon 구현
+- Window State 관리 개선
+
+---
+
 ## [1.0.2] - 2025-11-01
 
 ### 추가됨 (Added)
@@ -166,3 +187,20 @@
 - 아키텍처 Clean Architecture로 리팩터링
 
 ---
+
+## 버전 규칙
+
+이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
+
+- **MAJOR** version: 호환되지 않는 API 변경
+- **MINOR** version: 하위 호환되는 기능 추가
+- **PATCH** version: 하위 호환되는 버그 수정
+
+## 카테고리
+
+- **Added**: 새로운 기능
+- **Changed**: 기존 기능의 변경
+- **Deprecated**: 곧 제거될 기능
+- **Removed**: 제거된 기능
+- **Fixed**: 버그 수정
+- **Security**: 보안 관련 변경
