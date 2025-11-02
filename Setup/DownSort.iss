@@ -3,7 +3,7 @@
 ; https://jrsoftware.org/isinfo.php
 
 #define MyAppName "DownSort"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "1.0.3"
 #define MyAppPublisher "DownSort Team"
 #define MyAppURL "https://github.com/BaeTab/downsort"
 #define MyAppExeName "Downsort.exe"
@@ -21,11 +21,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-; LicenseFile=..\LICENSE.txt
-; InfoBeforeFile=..\README.md
 OutputDir=..\Installer
 OutputBaseFilename=DownSort-Setup-{#MyAppVersion}
-; SetupIconFile=..\Downsort\Resources\app.ico
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
@@ -42,10 +39,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "startupicon"; Description: "�ý��� ���� �� �ڵ� ����"; GroupDescription: "�߰� �ɼ�:"; Flags: unchecked
+Name: "startupicon"; Description: "Start with Windows"; GroupDescription: "Additional options:"; Flags: unchecked
 
 [Files]
-; Main Application - Use correct publish path
 Source: "..\Downsort\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
@@ -60,10 +56,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Type: filesandordirs; Name: "{localappdata}\DownSort"
 
 [Registry]
-; Startup registry entry
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "DownSort"; ValueData: "{app}\{#MyAppExeName}"; Flags: uninsdeletevalue; Tasks: startupicon
-
-; Application settings
 Root: HKCU; Subkey: "Software\{#MyAppPublisher}\{#MyAppName}"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\{#MyAppPublisher}\{#MyAppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"
 
@@ -72,7 +65,6 @@ procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
   begin
-    // Create default configuration directory
     CreateDir(ExpandConstant('{localappdata}\DownSort'));
   end;
 end;
@@ -83,8 +75,8 @@ var
 begin
   if CurUninstallStep = usUninstall then
   begin
-    DialogResult := MsgBox('����� ������(����, ��Ģ, �α�)�� �����Ͻðڽ��ϱ�?' + #13#10 + 
-                           '�ƴϿ��� �����ϸ� �缳ġ �� �����Ͱ� �����˴ϴ�.', 
+    DialogResult := MsgBox('Do you want to delete user data (settings, rules, logs)?' + #13#10 + 
+                           'If you choose No, the data will be kept for reinstallation.', 
                            mbConfirmation, MB_YESNO);
     if (DialogResult = IDYES) then
     begin
@@ -92,11 +84,5 @@ begin
     end;
   end;
 end;
-
-[CustomMessages]
-korean.LaunchProgram=DownSort ����
-korean.CreateDesktopIcon=����ȭ�� ������ �����
-korean.AdditionalIcons=�߰� ������:
-korean.UninstallProgram=����
 
 
