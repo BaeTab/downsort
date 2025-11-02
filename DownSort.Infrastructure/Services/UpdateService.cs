@@ -163,16 +163,38 @@ namespace DownSort.Infrastructure.Services
         }
         
         /// <summary>
-        /// 현재 버전 가져오기
+        /// 현재 버전 가져오기 - AssemblyInformationalVersion 사용
         /// </summary>
         public string GetCurrentVersion()
         {
-            var assembly = Assembly.GetEntryAssembly();
-            var version = assembly?.GetName().Version;
-            
-            if (version != null)
+            try
             {
-                return $"{version.Major}.{version.Minor}.{version.Build}";
+                var assembly = Assembly.GetEntryAssembly();
+                
+                // AssemblyInformationalVersion 속성 먼저 확인 (Directory.Build.props의 InformationalVersion)
+                var infoVersionAttr = assembly?.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+                    .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+                
+                if (infoVersionAttr != null && !string.IsNullOrEmpty(infoVersionAttr.InformationalVersion))
+                {
+                    // "1.0.3+metadata" 형식에서 "1.0.3"만 추출
+                    var version = infoVersionAttr.InformationalVersion.Split('+')[0];
+                    Debug.WriteLine($"현재 버전: {version} (InformationalVersion)");
+                    return version;
+                }
+                
+                // Assembly Version으로 폴백
+                var assemblyVersion = assembly?.GetName().Version;
+                if (assemblyVersion != null)
+                {
+                    var version = $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
+                    Debug.WriteLine($"현재 버전: {version} (AssemblyVersion)");
+                    return version;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"버전 확인 실패: {ex.Message}");
             }
             
             return "1.0.0";
