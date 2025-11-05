@@ -7,7 +7,12 @@
       <Nullable>enable</Nullable>
       <ImplicitUsings>disable</ImplicitUsings>
       <LangVersion>12.0</LangVersion>
+      <ApplicationIcon>download_8080663.ico</ApplicationIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="download_8080663.ico" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="DevExpress.Wpf" Version="25.1.5" />
