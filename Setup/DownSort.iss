@@ -3,7 +3,7 @@
 ; https://jrsoftware.org/isinfo.php
 
 #define MyAppName "DownSort"
-#define MyAppVersion "1.0.3"
+#define MyAppVersion "1.0.4"
 #define MyAppPublisher "DownSort Team"
 #define MyAppURL "https://github.com/BaeTab/downsort"
 #define MyAppExeName "Downsort.exe"

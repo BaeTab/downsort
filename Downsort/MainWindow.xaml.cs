@@ -23,7 +23,7 @@ namespace Downsort
             InitializeComponent();
             DataContext = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
             
-            // Window state changed event for maximize/restore button
+            // Window state changed event for minimize-to-tray
             StateChanged += MainWindow_StateChanged;
             
             // Initialize System Tray Icon
@@ -42,7 +42,7 @@ namespace Downsort
             }
             catch
             {
-                // Use default icon if conversion fails
+                // ignore
             }
             
             // Tray icon click - restore window
@@ -91,19 +91,6 @@ namespace Downsort
             {
                 Hide();
                 _notifyIcon?.ShowBalloonTip("DownSort", "트레이로 최소화되었습니다", BalloonIcon.Info);
-                return;
-            }
-            
-            // Update maximize/restore button icon
-            if (WindowState == WindowState.Maximized)
-            {
-                MaximizeRestoreIcon.Data = (Geometry)FindResource("RestoreIcon");
-                MaximizeRestoreButton.ToolTip = "Restore";
-            }
-            else
-            {
-                MaximizeRestoreIcon.Data = (Geometry)FindResource("MaximizeIcon");
-                MaximizeRestoreButton.ToolTip = "Maximize";
             }
         }
         
@@ -131,58 +118,9 @@ namespace Downsort
             base.OnClosing(e);
         }
 
-        // Title Bar Event Handlers
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                // Double click to maximize/restore
-                MaximizeRestoreButton_Click(sender, e);
-            }
-            else
-            {
-                // Single click to drag window
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    try
-                    {
-                        DragMove();
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        // Can only call DragMove when primary mouse button is down
-                        // Ignore this exception
-                    }
-                }
-            }
-        }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (WindowState == WindowState.Normal)
-            {
-                WindowState = WindowState.Maximized;
-            }
-            else
-            {
-                WindowState = WindowState.Normal;
-            }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Close button minimizes to tray
-            WindowState = WindowState.Minimized;
-        }
-
         private void OnRecentLogDoubleClick(object sender, RowDoubleClickEventArgs e)
         {
-            if (e.HitInfo.RowHandle >= 0)
+            if (e.HitInfo.RowHandle >=0)
             {
                 var view = sender as TableView;
                 var log = view?.Grid.GetRow(e.HitInfo.RowHandle) as MoveLogEntry;
